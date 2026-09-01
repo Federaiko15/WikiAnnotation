@@ -1,3 +1,5 @@
+import CreateConceptMapButton from "@/components/article/CreateConceptMapButton";
+
 type ArticleParams = {
   params: Promise<{
     title: string;
@@ -73,15 +75,15 @@ export default async function ArticlePage({ params }: ArticleParams) {
   return (
     <main className="article-container">
       <article className="article-card">
-        <h1 className="article-title">
-          {canonicalTitle}
-        </h1>
+        <h1 className="article-title">{canonicalTitle}</h1>
 
-        <p className="article-content" style={{ whiteSpace: "pre-line" }}>
-          {page.extract}
-        </p>
+        <div className="max-h-[50vh] overflow-y-auto pr-3 rounded-lg border border-gray-100 bg-gray-50/50 p-4 dark:border-neutral-800 dark:bg-neutral-950/40">
+          <p className="article-content" style={{ whiteSpace: "pre-line" }}>
+            {page.extract}
+          </p>
+        </div>
 
-        <div className="mt-4 flex flex-col gap-2 border-t border-gray-100 pt-4 dark:border-neutral-800">
+        <div className="mt-2 flex flex-col gap-2 border-t border-gray-100 pt-4 dark:border-neutral-800">
           <a
             href={originalUrl}
             target="_blank"
@@ -97,6 +99,10 @@ export default async function ArticlePage({ params }: ArticleParams) {
           </p>
         </div>
       </article>
+
+      <div className="flex justify-end">
+        <CreateConceptMapButton pageKey={wikipediaKey} />
+      </div>
     </main>
   );
 }
