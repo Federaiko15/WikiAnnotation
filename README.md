@@ -31,7 +31,7 @@ oppure:
 Seconda guerra mondiale
 ```
 
-Il contenuto della voce Wikipedia viene quindi elaborato in più fasi, con l’obiettivo di ottenere appunti sintetici e visivamente organizzati.
+Il contenuto della voce Wikipedia viene elaborato in più fasi, con l’obiettivo di ottenere appunti sintetici e visivamente organizzati.
 
 ## Pipeline applicativa
 
@@ -80,30 +80,30 @@ Gli output visuali sono pensati come appunti didattici in stile sketchnote: tito
 
 ### Alessandro Magno
 
-![Appunti visuali su Alessandro Magno](./assets/alessandro-magno.jpg)
+![Appunti visuali su Alessandro Magno](./assets/alessandro-magno.png)
 
 L’infografica organizza informazioni relative a identità, formazione, ascesa al trono, campagne militari, governo, integrazione culturale e spedizione in India.
 
 ### Seconda guerra mondiale
 
-![Appunti visuali sulla Seconda guerra mondiale](./assets/seconda-guerra-mondiale.jpg)
+![Appunti visuali sulla Seconda guerra mondiale](./assets/seconda-guerra-mondiale.png)
 
 L’infografica rappresenta cronologia, alleanze, teatri principali, tattiche e tecnologie, crimini, resistenza e conseguenze geopolitiche.
 
 ### Interazione ormone–ambiente
 
-![Appunti visuali sull’interazione ormone-ambiente](./assets/interazione-ormone-ambiente.jpg)
+![Appunti visuali sull’interazione ormone-ambiente](./assets/interazione-ormone-ambiente.png)
 
 L’infografica mostra le relazioni fra ormoni, ambiente, genetica, stress, epigenetica, recettori e risposta comportamentale.
 
-> **Nota:** salva le immagini nella cartella `assets/` usando questi nomi:
->
-> ```text
-> assets/
-> ├── alessandro-magno.png
-> ├── seconda-guerra-mondiale.png
-> └── interazione-ormone-ambiente.png
-> ```
+Le immagini sono archiviate nella cartella:
+
+```text
+assets/
+├── alessandro-magno.png
+├── seconda-guerra-mondiale.png
+└── interazione-ormone-ambiente.png
+```
 
 ## Architettura prevista
 
@@ -278,7 +278,11 @@ npm run dev
 
 ## Installazione
 
+Clona il repository e installa le dipendenze:
+
 ```bash
+git clone https://github.com/Federaiko15/WikiAnnotation.git
+cd WikiAnnotation
 npm install
 ```
 
@@ -316,7 +320,11 @@ Esempio di avviso:
 
 > Appunti generati dall’intelligenza artificiale a partire dalla voce Wikipedia indicata. Verifica sempre il contenuto sulla fonte originale.
 
-Quando riutilizzi contenuti Wikipedia, verifica e applica correttamente i requisiti di attribuzione e licenza Creative Commons BY-SA applicabili al contenuto della voce. [Wikimedia — Content reuse](https://www.mediawiki.org/wiki/Wikimedia_APIs/Content_reuse)
+Quando riutilizzi contenuti Wikipedia, verifica e applica correttamente i requisiti di attribuzione e licenza Creative Commons BY-SA applicabili al contenuto della voce.
+
+Per ulteriori informazioni, consulta la pagina ufficiale di Wikimedia sul riutilizzo dei contenuti:
+
+[Wikimedia — Content reuse](https://www.mediawiki.org/wiki/Wikimedia_APIs/Content_reuse)
 
 ## Limitazioni attuali
 
@@ -327,6 +335,7 @@ Quando riutilizzi contenuti Wikipedia, verifica e applica correttamente i requis
 - Il blueprint deve essere mantenuto compatto per evitare infografiche sovraccariche.
 - Il parser HTML potrebbe richiedere regole aggiuntive per tabelle e strutture particolari.
 - L’immagine generata deve essere considerata un supporto visuale, non una fonte documentale.
+- Il risultato generato dall’IA deve essere verificato rispetto alla pagina Wikipedia originale.
 
 ## Sviluppi futuri
 
@@ -345,7 +354,7 @@ Quando riutilizzi contenuti Wikipedia, verifica e applica correttamente i requis
 
 ## Licenza
 
-Aggiungi qui la licenza scelta per il codice del progetto, ad esempio MIT:
+Il codice del progetto è distribuito secondo la licenza MIT.
 
 ```text
 MIT License
@@ -358,4 +367,3 @@ Il codice dell’applicazione e i contenuti provenienti da Wikipedia possono ess
 Sviluppato da **Federico Gueli**.
 
 Progetto sperimentale dedicato all’incontro tra sviluppo full-stack, intelligenza artificiale e strumenti didattici visuali.
- 
