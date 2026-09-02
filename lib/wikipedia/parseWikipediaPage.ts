@@ -1,17 +1,6 @@
 import * as cheerio from "cheerio";
 
-export interface WikiSection {
-  title: string;
-  level: 1 | 2 | 3;
-  content: string[];
-  text: string;
-}
-
-export interface ParsedWikiPage {
-  title: string;
-  sourceUrl: string;
-  sections: WikiSection[];
-}
+import type { ParsedWikiPage, WikiSection } from "./types";
 
 const EXCLUDED_SECTION_TITLES = new Set([
   "note",

@@ -1,4 +1,5 @@
-import { parseWikipediaPage } from "@/lib/wikipedia/parseWikipediaPage";
+import Link from "next/link";
+import GenerateBlueprintButton from "@/components/article/GenerateBlueprintButton";
 
 type ConceptMapPageProps = {
   params: Promise<{
@@ -8,26 +9,29 @@ type ConceptMapPageProps = {
 
 export default async function ConceptMapPage({ params }: ConceptMapPageProps) {
   const { title } = await params;
-
   const pageKey = decodeURIComponent(title);
-
-  const parsedPage = await parseWikipediaPage("it", pageKey);
+  const displayTitle = pageKey.replace(/_/g, " ");
 
   return (
-    <main>
-      <h1>Mappa concettuale: {parsedPage.title}</h1>
+    <main className="article-container">
+      <div className="article-card">
+        <div className="flex items-center justify-between border-b border-gray-100 pb-4 dark:border-neutral-800">
+          <div>
+            <Link
+              href={`/article/${encodeURIComponent(pageKey)}`}
+              className="text-xs font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              ← Torna alla voce
+            </Link>
+            <h1 className="article-title mt-2">
+              Mappa concettuale: {displayTitle}
+            </h1>
+          </div>
+        </div>
 
-      <p>Sezioni estratte: {parsedPage.sections.length}</p>
-
-      {parsedPage.sections.map((section) => (
-        <section key={section.title}>
-          <h2>{section.title}</h2>
-
-          {section.content.map((paragraph, index) => (
-            <p key={`${section.title}-${index}`}>{paragraph}</p>
-          ))}
-        </section>
-      ))}
+        <GenerateBlueprintButton pageKey={pageKey} />
+      </div>
     </main>
   );
 }
+
