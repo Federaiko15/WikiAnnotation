@@ -100,9 +100,9 @@ L’infografica mostra le relazioni fra ormoni, ambiente, genetica, stress, epig
 >
 > ```text
 > assets/
-> ├── alessandro-magno.jpg
-> ├── seconda-guerra-mondiale.jpg
-> └── interazione-ormone-ambiente.jpg
+> ├── alessandro-magno.png
+> ├── seconda-guerra-mondiale.png
+> └── interazione-ormone-ambiente.png
 > ```
 
 ## Architettura prevista
