@@ -114,6 +114,12 @@ L'infografia rappresenta la struttura e gli argomenti trattati nella celebra ope
 
 L'infografia mostra la storia, i personaggi e i luoghi principali della maestosa opera fantasy Il Signore degli Anelli.
 
+### Jack Sparrow
+
+![Appunti visuali sul capitano Jack Sparrow](./assets/appunti-visivi-jack-sparrow.png)
+
+L'infografia mostra il personaggio cinematografico di capitan Jack Sparrow, descrivendolo nell'aspetto, nei suoi oggetti iconici e della storia che lo vede protagonista di innumerevoli gesta
+
 Le immagini sono archiviate nella cartella:
 
 ```text
