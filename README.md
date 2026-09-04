@@ -96,13 +96,31 @@ L’infografica rappresenta cronologia, alleanze, teatri principali, tattiche e 
 
 L’infografica mostra le relazioni fra ormoni, ambiente, genetica, stress, epigenetica, recettori e risposta comportamentale.
 
+### Luigi Pirandello
+
+![Appunti visuali su Luigi Pirandello](./assets/appunti-visivi-luigi-pirandello.png)
+
+L'infografia mostra la storia le opere principali dell'autore siciliano Luigi Pirandello.
+
+### Divina Commedia
+
+![Appunti visuali sulla Divina Commedia](./assets/appunti-visivi-divina-commedia.png)
+
+L'infografia rappresenta la struttura e gli argomenti trattati nella celebra opera di Dante Alighieri, la Divina Commedia.
+
+### Il Signore degli Anelli
+
+![Appunti visuali sul Signore degli Anelli](./assets/appunti-visivi-il-signore-degli-anelli.png)
+
+L'infografia mostra la storia, i personaggi e i luoghi principali della maestosa opera fantasy Il Signore degli Anelli.
+
 Le immagini sono archiviate nella cartella:
 
 ```text
 assets/
 ├── alessandro-magno.png
 ├── seconda-guerra-mondiale.png
-└── interazione-ormone-ambiente.png
+└── interazione-ormone-ambiente.png ...
 ```
 
 ## Architettura prevista
@@ -131,7 +149,7 @@ components/
 ├── article/
 │   └── CreateConceptMapButton.tsx
 └── notes/
-    └── GenerateVisualNotesButton.tsx
+    └── VisualNotesStudio.tsx
 
 lib/
 ├── ai/
