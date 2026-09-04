@@ -1,3 +1,4 @@
+import Link from "next/link";
 import CreateConceptMapButton from "@/components/article/CreateConceptMapButton";
 
 type ArticleParams = {
@@ -55,13 +56,18 @@ export default async function ArticlePage({ params }: ArticleParams) {
   if (!page || page.missing !== undefined || !page.extract) {
     return (
       <main className="article-container">
-        <div className="article-card">
-          <h1 className="article-title text-red-600 dark:text-red-400">
+        <div className="sketch-panel p-6 sm:p-8 border-red-500 shadow-[4px_4px_0px_#ef4444]">
+          <h1 className="article-title text-red-600">
             Articolo non trovato
           </h1>
-          <p className="article-content">
-            Non è stato possibile recuperare il testo di questa voce.
+          <p className="article-content mt-2">
+            Non è stato possibile recuperare il testo di questa voce da Wikipedia.
           </p>
+          <div className="mt-4">
+            <Link href="/" className="sketch-btn-white text-xs">
+              ← Torna alla ricerca
+            </Link>
+          </div>
         </div>
       </main>
     );
@@ -74,28 +80,51 @@ export default async function ArticlePage({ params }: ArticleParams) {
 
   return (
     <main className="article-container">
-      <article className="article-card">
-        <h1 className="article-title">{canonicalTitle}</h1>
+      {/* Top back navigation */}
+      <div>
+        <Link
+          href="/"
+          className="sketch-btn-white text-xs py-1 px-2.5 inline-flex items-center gap-1"
+        >
+          ← Torna alla ricerca
+        </Link>
+      </div>
 
-        <div className="max-h-[50vh] overflow-y-auto pr-3 rounded-lg border border-gray-100 bg-gray-50/50 p-4 dark:border-neutral-800 dark:bg-neutral-950/40">
+      {/* Signature Sketchnote Title Box */}
+      <div>
+        <div className="sketchnote-title-box px-5 py-2.5 text-xl sm:text-2xl">
+          {canonicalTitle}
+        </div>
+      </div>
+
+      <article className="sketch-panel p-6 sm:p-8 flex flex-col gap-5">
+        <div className="flex items-center justify-between border-b-2 border-dashed border-zinc-200 pb-3">
+          <span className="text-xs font-sketch font-bold uppercase tracking-wider text-zinc-500">
+            Estratto didattico da Wikipedia
+          </span>
+          <span className="sketch-badge-ink">
+            Testo di base
+          </span>
+        </div>
+
+        <div className="max-h-[50vh] overflow-y-auto pr-3 rounded border-2 border-zinc-900 bg-white p-5 shadow-[2px_2px_0px_#18181b]">
           <p className="article-content" style={{ whiteSpace: "pre-line" }}>
             {page.extract}
           </p>
         </div>
 
-        <div className="mt-2 flex flex-col gap-2 border-t border-gray-100 pt-4 dark:border-neutral-800">
+        <div className="flex flex-col gap-2 border-t-2 border-dashed border-zinc-200 pt-4">
           <a
             href={originalUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+            className="text-sm font-sketch font-bold text-teal-700 hover:text-teal-900 hover:underline inline-flex items-center gap-1"
           >
-            Apri la fonte originale su Wikipedia →
+            ↳ Apri la fonte originale su Wikipedia ↗
           </a>
 
-          <p className="text-xs text-gray-400 dark:text-neutral-500">
-            Fonte: Wikipedia. Consulta sempre la voce originale per verificare
-            informazioni, contesto e fonti.
+          <p className="text-xs text-zinc-400">
+            Fonte: Wikipedia. Consulta sempre la voce originale per verificare informazioni, contesto e fonti.
           </p>
         </div>
       </article>
