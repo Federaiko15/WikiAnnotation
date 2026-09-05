@@ -7,12 +7,16 @@ const requestSchema = z.object({
   blueprint: visualNotesBlueprintSchema,
   outputLanguage: z.enum(["it", "en"]).default("it"),
   aspectRatio: z.enum(["3:4", "1:1", "9:16", "16:9"]).default("3:4").optional(),
+  annotationStyle: z
+    .union([z.literal(0), z.literal(1), z.literal(2)])
+    .default(0),
 });
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { blueprint, outputLanguage, aspectRatio } = requestSchema.parse(body);
+    const { blueprint, outputLanguage, aspectRatio, annotationStyle } =
+      requestSchema.parse(body);
 
     console.log(
       `[API /api/image] Inizio generazione immagine con l'AI per "${blueprint.topic}" (${aspectRatio ?? "3:4"}, ${outputLanguage})...`,
@@ -22,6 +26,7 @@ export async function POST(request: NextRequest) {
       blueprint,
       outputLanguage,
       aspectRatio,
+      annotationStyle,
     });
 
     return NextResponse.json(result);
@@ -46,10 +51,6 @@ export async function POST(request: NextRequest) {
         ? error.message
         : "Errore durante la generazione dell'immagine";
 
-    return NextResponse.json(
-      { error: message },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-

@@ -18,7 +18,7 @@ export default function PageCard({
   function choosePage() {
     const safePageKey = encodeURIComponent(pageKey);
 
-    router.push(`/article/${safePageKey}`);
+    router.push(`/article_text/${safePageKey}?source=wikipedia`);
   }
 
   return (

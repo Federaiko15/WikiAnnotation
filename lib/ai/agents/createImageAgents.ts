@@ -2,6 +2,7 @@ import type { VisualNotesBlueprint } from "../schemas/visualNotesBlueprintSchema
 import { IMAGE_SYSTEM_PROMPT } from "../prompts/imageSystemPrompt";
 
 type OutputLanguage = "it" | "en";
+export type ImageStyle = 0 | 1 | 2;
 
 function highlightText(
   text: string,
@@ -15,6 +16,7 @@ function highlightText(
 export function createImageAgent(
   blueprint: VisualNotesBlueprint,
   outputLanguage: OutputLanguage,
+  imageStyle: ImageStyle,
 ) {
   const languageName = outputLanguage === "it" ? "Italian" : "English";
 
@@ -49,7 +51,7 @@ export function createImageAgent(
 
   return {
     system: [
-      IMAGE_SYSTEM_PROMPT,
+      IMAGE_SYSTEM_PROMPT[imageStyle],
       "",
       `VISIBLE TEXT LANGUAGE: ${languageName}`,
       "Use only the blueprint below as the authoritative content source.",

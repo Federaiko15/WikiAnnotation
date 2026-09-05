@@ -5,11 +5,16 @@ import Image, { StaticImageData } from "next/image";
 
 // 1. Importa le immagini dalla cartella assets
 import alessandroMagno from "@/assets/alessandro-magno.png";
+import aristotele from "@/assets/appunti-visivi-aristotele.png";
 import divinaCommedia from "@/assets/appunti-visivi-divina-commedia.png";
 import signoreDegliAnelli from "@/assets/appunti-visivi-il-signore-degli-anelli.png";
+import fotosintesi1 from "@/assets/appunti-visivi-fotosintesi-clorofilliana.png";
 import ilReLeone from "@/assets/appunti-visivi-il-re-leone.png";
+import harryPotter from "@/assets/appunti-visivi-harry-potter-e-il-calice-di-fuoco.png";
 import pirandello from "@/assets/appunti-visivi-luigi-pirandello.png";
+import fotosintesi2 from "@/assets/appunti-visivi-fotosintesi-clorofilliana(1).png";
 import secondaGuerraMondiale from "@/assets/seconda-guerra-mondiale.png";
+import starwars from "@/assets/appunti-visivi-star-wars-episodio-iii-la-vendetta-dei-sith.png";
 
 type Slide = {
   image: StaticImageData;
@@ -25,6 +30,11 @@ const slides: Slide[] = [
     description: "Mappa concettuale sulle conquiste e l'impero macedone.",
   },
   {
+    image: aristotele,
+    title: "Aristotele",
+    description: "Chi e cosa ha scritto il filosofo Aristotele",
+  },
+  {
     image: divinaCommedia,
     title: "La Divina Commedia",
     description: "Struttura dei tre regni danteschi e viaggio allegorico.",
@@ -35,10 +45,20 @@ const slides: Slide[] = [
     description: "Temi, personaggi chiave e geografia della Terra di Mezzo.",
   },
   {
+    image: fotosintesi1,
+    title: "Fotosintesi Clorofiliana 1",
+    description: "Descrizione del processo di fotosintesi clorofiliana",
+  },
+  {
     image: ilReLeone,
     title: "Il Re Leone",
     description:
       "Archetipi narrativi, cerchio della vita e riferimenti shakespeareiani.",
+  },
+  {
+    image: harryPotter,
+    title: "Harry Potter e il Calice di Fuoco",
+    description: "Trama e informazioni sul terzo film della saga Harry Potter",
   },
   {
     image: pirandello,
@@ -46,9 +66,20 @@ const slides: Slide[] = [
     description: "Il relativismo, le maschere e la poetica dell'umorismo.",
   },
   {
+    image: fotosintesi2,
+    title: "Fotosintesi Clorofiliana (Schema ad Albero)",
+    description: "Descrizione del processo di fotosintesi clorofiliana",
+  },
+  {
     image: secondaGuerraMondiale,
     title: "Seconda Guerra Mondiale",
     description: "Cronologia essenziale, fronti principali ed esiti storici.",
+  },
+  {
+    image: starwars,
+    title: "Star Wars - La vendetta dei Sith",
+    description:
+      "Trama, personaggi principali e temi dell'ultimo film della trilogia prequel di Star Wars.",
   },
 ];
 
@@ -71,7 +102,7 @@ export default function Carousel() {
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 4000);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, [isPlaying, isHovered]);
@@ -93,7 +124,11 @@ export default function Carousel() {
             type="button"
             onClick={() => setIsPlaying(!isPlaying)}
             className="text-xs font-sketch font-bold text-zinc-500 hover:text-zinc-900 transition-colors inline-flex items-center gap-1 cursor-pointer"
-            title={isPlaying ? "Metti in pausa lo scorrimento automatico" : "Attiva lo scorrimento automatico"}
+            title={
+              isPlaying
+                ? "Metti in pausa lo scorrimento automatico"
+                : "Attiva lo scorrimento automatico"
+            }
           >
             <span>{isPlaying ? "⏸ In pausa" : "▶ Riproduci"}</span>
           </button>

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import type { VisualNotesBlueprint } from "@/lib/ai/schemas/visualNotesBlueprintSchema";
 import type { LearningLevel } from "@/lib/ai/agents/createBlueprintAgents";
 import type { ImageAspectRatio } from "@/lib/ai/services/generateImage";
+import type { ImageStyle } from "@/lib/ai/agents/createImageAgents";
 import {
   fetchBlueprint,
   fetchGeneratedImage,
@@ -31,6 +32,7 @@ export default function VisualNotesStudio({
   const [learningLevel, setLearningLevel] = useState<LearningLevel>("general");
   const [aspectRatio, setAspectRatio] = useState<ImageAspectRatio>("3:4");
   const [autoGenerateImage, setAutoGenerateImage] = useState<boolean>(false);
+  const [annotationStyle, setAnnotationStyle] = useState<ImageStyle>(0);
 
   // Workflow results
   const [blueprint, setBlueprint] = useState<VisualNotesBlueprint | null>(null);
@@ -41,9 +43,9 @@ export default function VisualNotesStudio({
 
   // UI state
   const [currentStep, setCurrentStep] = useState<StepKey>("config");
-  const [loadingPhase, setLoadingPhase] = useState<"blueprint" | "image" | null>(
-    null,
-  );
+  const [loadingPhase, setLoadingPhase] = useState<
+    "blueprint" | "image" | null
+  >(null);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch 1: /api/blueprint
@@ -94,7 +96,9 @@ export default function VisualNotesStudio({
   }
 
   // Fetch 2: /api/image
-  async function executeImageGeneration(targetBlueprint?: VisualNotesBlueprint) {
+  async function executeImageGeneration(
+    targetBlueprint?: VisualNotesBlueprint,
+  ) {
     const bp = targetBlueprint ?? blueprint;
 
     if (!bp) {
@@ -116,6 +120,7 @@ export default function VisualNotesStudio({
         blueprint: bp,
         outputLanguage,
         aspectRatio,
+        annotationStyle,
       });
 
       console.log(
@@ -177,6 +182,7 @@ export default function VisualNotesStudio({
           setOutputLanguage={setOutputLanguage}
           aspectRatio={aspectRatio}
           setAspectRatio={setAspectRatio}
+          setAnnotationStyle={setAnnotationStyle}
           autoGenerateImage={autoGenerateImage}
           setAutoGenerateImage={setAutoGenerateImage}
           onSubmit={handleGenerateBlueprint}
@@ -188,17 +194,19 @@ export default function VisualNotesStudio({
       )}
 
       {/* Step 2: Educational Blueprint Preview */}
-      {blueprint && (currentStep === "blueprint" || (!imageResult && currentStep !== "config")) && (
-        <BlueprintViewer
-          blueprint={blueprint}
-          source={source ?? undefined}
-          aspectRatio={aspectRatio}
-          setAspectRatio={setAspectRatio}
-          onGenerateImage={() => executeImageGeneration()}
-          isGeneratingImage={loadingPhase === "image"}
-          hasImage={!!imageResult}
-        />
-      )}
+      {blueprint &&
+        (currentStep === "blueprint" ||
+          (!imageResult && currentStep !== "config")) && (
+          <BlueprintViewer
+            blueprint={blueprint}
+            source={source ?? undefined}
+            aspectRatio={aspectRatio}
+            setAspectRatio={setAspectRatio}
+            onGenerateImage={() => executeImageGeneration()}
+            isGeneratingImage={loadingPhase === "image"}
+            hasImage={!!imageResult}
+          />
+        )}
 
       {/* Step 3: Generated Infographic Sketchnote Image */}
       {imageResult && currentStep === "image" && (

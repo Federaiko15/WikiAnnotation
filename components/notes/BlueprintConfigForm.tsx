@@ -4,6 +4,11 @@ import React from "react";
 import type { LearningLevel } from "@/lib/ai/agents/createBlueprintAgents";
 import type { OutputLanguage } from "@/lib/api/notesClient";
 import type { ImageAspectRatio } from "@/lib/ai/services/generateImage";
+import secondaGuerraMondialeImg from "@/assets/seconda-guerra-mondiale.png";
+import fotosintesi from "@/assets/appunti-visivi-fotosintesi-clorofilliana(1).png";
+import aristotele from "@/assets/appunti-visivi-aristotele.png";
+import Image from "next/image";
+import { ImageStyle } from "@/lib/ai/agents/createImageAgents";
 
 type BlueprintConfigFormProps = {
   learningLevel: LearningLevel;
@@ -12,6 +17,7 @@ type BlueprintConfigFormProps = {
   setOutputLanguage: (lang: OutputLanguage) => void;
   aspectRatio: ImageAspectRatio;
   setAspectRatio: (ratio: ImageAspectRatio) => void;
+  setAnnotationStyle: (style: ImageStyle) => void;
   autoGenerateImage: boolean;
   setAutoGenerateImage: (val: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -28,6 +34,7 @@ export default function BlueprintConfigForm({
   setOutputLanguage,
   aspectRatio,
   setAspectRatio,
+  setAnnotationStyle,
   autoGenerateImage,
   setAutoGenerateImage,
   onSubmit,
@@ -49,7 +56,8 @@ export default function BlueprintConfigForm({
           </h2>
         </div>
         <p className="mt-1 text-xs text-zinc-500 font-sans">
-          Personalizza il target scolastico, la lingua degli appunti e le proporzioni del foglio da disegno.
+          Personalizza il target scolastico, la lingua degli appunti e le
+          proporzioni del foglio da disegno.
         </p>
       </div>
 
@@ -70,8 +78,12 @@ export default function BlueprintConfigForm({
             className="sketch-select"
           >
             <option value="primary">Scuola Primaria (Elementari)</option>
-            <option value="middle-school">Scuola Secondaria I Grado (Medie)</option>
-            <option value="high-school">Scuola Secondaria II Grado (Superiori)</option>
+            <option value="middle-school">
+              Scuola Secondaria I Grado (Medie)
+            </option>
+            <option value="high-school">
+              Scuola Secondaria II Grado (Superiori)
+            </option>
             <option value="university">Università / Specialistico</option>
             <option value="general">Generale / Divulgativo</option>
           </select>
@@ -91,7 +103,9 @@ export default function BlueprintConfigForm({
           <select
             id="outputLanguage"
             value={outputLanguage}
-            onChange={(e) => setOutputLanguage(e.target.value as OutputLanguage)}
+            onChange={(e) =>
+              setOutputLanguage(e.target.value as OutputLanguage)
+            }
             disabled={loading}
             className="sketch-select"
           >
@@ -147,6 +161,80 @@ export default function BlueprintConfigForm({
               </span>
             </div>
           </label>
+        </div>
+
+        {/* Stile di annotazione */}
+        <div className="sm:col-span-2">
+          <fieldset>
+            <legend className="text-xs font-sketch font-bold uppercase tracking-wider text-zinc-800 mb-2">
+              Scegli lo stile di annotazione
+            </legend>
+
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              <label
+                htmlFor="first-style"
+                className="flex flex-col items-center gap-2 cursor-pointer group"
+              >
+                <Image
+                  src={secondaGuerraMondialeImg}
+                  alt="Esempio di annotazione in stile sketchnote"
+                  className="rounded border-2 border-zinc-900 shadow-[3px_3px_0px_#18181b] group-hover:shadow-[4px_4px_0px_#ea580c] transition-all w-full h-auto"
+                />
+                <input
+                  type="radio"
+                  name="annotation-style"
+                  id="first-style"
+                  value={0}
+                  className="h-4 w-4 accent-orange-600 cursor-pointer"
+                  onChange={(e) =>
+                    setAnnotationStyle(Number(e.target.value) as ImageStyle)
+                  }
+                />
+              </label>
+
+              <label
+                htmlFor="second-style"
+                className="flex flex-col items-center gap-2 cursor-pointer group"
+              >
+                <Image
+                  src={aristotele}
+                  alt="Esempio di annotazione in stile sketchnote"
+                  className="rounded border-2 border-zinc-900 shadow-[3px_3px_0px_#18181b] group-hover:shadow-[4px_4px_0px_#ea580c] transition-all w-full h-auto"
+                />
+                <input
+                  type="radio"
+                  name="annotation-style"
+                  id="second-style"
+                  value={1}
+                  className="h-4 w-4 accent-orange-600 cursor-pointer"
+                  onChange={(e) =>
+                    setAnnotationStyle(Number(e.target.value) as ImageStyle)
+                  }
+                />
+              </label>
+
+              <label
+                htmlFor="third-style"
+                className="flex flex-col items-center gap-2 cursor-pointer group"
+              >
+                <Image
+                  src={fotosintesi}
+                  alt="Esempio di annotazione in stile sketchnote"
+                  className="rounded border-2 border-zinc-900 shadow-[3px_3px_0px_#18181b] group-hover:shadow-[4px_4px_0px_#ea580c] transition-all w-full h-auto"
+                />
+                <input
+                  type="radio"
+                  name="annotation-style"
+                  id="third-style"
+                  value={2}
+                  className="h-4 w-4 accent-orange-600 cursor-pointer"
+                  onChange={(e) =>
+                    setAnnotationStyle(Number(e.target.value) as ImageStyle)
+                  }
+                />
+              </label>
+            </div>
+          </fieldset>
         </div>
       </div>
 

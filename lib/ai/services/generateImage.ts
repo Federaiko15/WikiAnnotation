@@ -3,6 +3,7 @@ import { openai } from "@ai-sdk/openai";
 
 import type { VisualNotesBlueprint } from "../schemas/visualNotesBlueprintSchema";
 import { createImageAgent } from "../agents/createImageAgents";
+import type { ImageStyle } from "../agents/createImageAgents";
 
 export type ImageAspectRatio = "3:4" | "1:1" | "9:16" | "16:9";
 
@@ -10,6 +11,7 @@ export type GenerateImageInput = {
   blueprint: VisualNotesBlueprint;
   outputLanguage: "it" | "en";
   aspectRatio?: ImageAspectRatio;
+  annotationStyle: ImageStyle;
 };
 
 export type GenerateImageOutput = {
@@ -25,8 +27,9 @@ export async function generateImageFromBlueprint({
   blueprint,
   outputLanguage,
   aspectRatio = "3:4",
+  annotationStyle,
 }: GenerateImageInput): Promise<GenerateImageOutput> {
-  const agent = createImageAgent(blueprint, outputLanguage);
+  const agent = createImageAgent(blueprint, outputLanguage, annotationStyle);
 
   const imageSize =
     aspectRatio === "1:1"

@@ -1,6 +1,7 @@
 import type { VisualNotesBlueprint } from "@/lib/ai/schemas/visualNotesBlueprintSchema";
 import type { LearningLevel } from "@/lib/ai/agents/createBlueprintAgents";
 import type { ImageAspectRatio } from "@/lib/ai/services/generateImage";
+import type { ImageStyle } from "@/lib/ai/agents/createImageAgents";
 
 export type OutputLanguage = "it" | "en";
 
@@ -23,6 +24,7 @@ export type ImageApiParams = {
   blueprint: VisualNotesBlueprint;
   outputLanguage: OutputLanguage;
   aspectRatio?: ImageAspectRatio;
+  annotationStyle: ImageStyle;
 };
 
 export type ImageApiResponse = {
@@ -54,8 +56,7 @@ export async function fetchBlueprint(
 
   if (!response.ok) {
     throw new Error(
-      data.error ||
-        "Impossibile generare il blueprint per la voce richiesta.",
+      data.error || "Impossibile generare il blueprint per la voce richiesta.",
     );
   }
 
@@ -74,6 +75,7 @@ export async function fetchGeneratedImage(
       blueprint: params.blueprint,
       outputLanguage: params.outputLanguage,
       aspectRatio: params.aspectRatio ?? "3:4",
+      annotationStyle: params.annotationStyle,
     }),
   });
 
@@ -81,8 +83,7 @@ export async function fetchGeneratedImage(
 
   if (!response.ok) {
     throw new Error(
-      data.error ||
-        "Impossibile generare l'immagine della mappa concettuale.",
+      data.error || "Impossibile generare l'immagine della mappa concettuale.",
     );
   }
 
