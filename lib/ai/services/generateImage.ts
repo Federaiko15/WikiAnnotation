@@ -47,7 +47,7 @@ export async function generateImageFromBlueprint({
     n: 1,
     providerOptions: {
       openai: {
-        quality: "high",
+        quality: "medium",
         output_format: "png",
       },
     },
