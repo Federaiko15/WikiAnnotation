@@ -12,7 +12,6 @@ const EXCLUDED_SECTION_TITLES = new Set([
   "categorie",
   "fonti",
   "vedi anche",
-  "approfondimenti",
   "fonti primarie",
   "testi generali",
   "testi specialistici",

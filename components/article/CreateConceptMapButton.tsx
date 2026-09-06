@@ -9,7 +9,7 @@ export default function CreateConceptMapButton({
 }: CreateConceptMapButtonProps) {
   return (
     <Link
-      href={`/article_text/${encodeURIComponent(pageKey)}/concept-map`}
+      href={`/article_text/${encodeURIComponent(pageKey)}/concept-map?source=wikipedia`}
       className="sketch-btn-teal text-base px-6 py-3.5"
     >
       <span>✎</span> Crea Mappa Concettuale ➔

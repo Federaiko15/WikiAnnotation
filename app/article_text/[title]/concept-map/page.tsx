@@ -21,10 +21,15 @@ export default async function ConceptMapPage({
   searchParams,
 }: {
   params: Promise<{ title: string }>;
-  searchParams: Promise<{ source?: string }>;
+  searchParams: Promise<{ source?: string; id?: string }>;
 }) {
   const { title } = await params;
   const { source } = await searchParams;
+  var redisId;
+  if (source == "custom") {
+    let { id } = await searchParams;
+    redisId = id;
+  }
   const pageKey = decodeURIComponent(title);
   const displayTitle = pageKey.replace(/_/g, " ");
 
@@ -40,12 +45,14 @@ export default async function ConceptMapPage({
             HOME
           </Link>
           <span className="text-zinc-400">➔</span>
-          <Link
-            href={`/article/${encodeURIComponent(pageKey)}`}
-            className="hover:text-orange-600 transition-colors truncate max-w-[200px]"
-          >
-            {displayTitle.toUpperCase()}
-          </Link>
+          {source == "wikipedia" && (
+            <Link
+              href={`/article/${encodeURIComponent(pageKey)}`}
+              className="hover:text-orange-600 transition-colors truncate max-w-[200px]"
+            >
+              {displayTitle.toUpperCase()}
+            </Link>
+          )}
           <span className="text-zinc-400">➔</span>
           <span className="text-zinc-900">MAPPA CONCETTUALE</span>
         </nav>
@@ -71,18 +78,24 @@ export default async function ConceptMapPage({
           </div>
 
           <div>
-            <Link
-              href={`/article/${encodeURIComponent(pageKey)}`}
-              className="sketch-btn-white text-xs py-2 px-3.5"
-            >
-              ← Torna al testo della voce
-            </Link>
+            {source == "wikipedia" && (
+              <Link
+                href={`/article/${encodeURIComponent(pageKey)}`}
+                className="sketch-btn-white text-xs py-2 px-3.5"
+              >
+                ← Torna al testo della voce
+              </Link>
+            )}
           </div>
         </div>
       </div>
 
       {/* Main Interactive Studio */}
-      <VisualNotesStudio pageKey={pageKey} articleTitle={displayTitle} />
+      <VisualNotesStudio
+        pageKey={pageKey}
+        articleTitle={displayTitle}
+        textId={redisId}
+      />
     </main>
   );
 }

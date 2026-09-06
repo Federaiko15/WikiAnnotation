@@ -21,11 +21,13 @@ import StatusBanner from "./StatusBanner";
 type VisualNotesStudioProps = {
   pageKey: string;
   articleTitle: string;
+  textId?: string;
 };
 
 export default function VisualNotesStudio({
   pageKey,
   articleTitle,
+  textId,
 }: VisualNotesStudioProps) {
   // Configuration options
   const [outputLanguage, setOutputLanguage] = useState<OutputLanguage>("it");
@@ -67,6 +69,7 @@ export default function VisualNotesStudio({
         learningLevel,
         outputLanguage,
         language: "it",
+        textId,
       });
 
       console.log(

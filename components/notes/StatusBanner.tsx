@@ -1,5 +1,3 @@
-import React from "react";
-
 type StatusBannerProps = {
   phase: "blueprint" | "image" | null;
   error: string | null;
@@ -31,7 +29,9 @@ export default function StatusBanner({
             </button>
           )}
         </div>
-        <p className="text-xs font-sans leading-relaxed text-zinc-700">{error}</p>
+        <p className="text-xs font-sans leading-relaxed text-zinc-700">
+          {error}
+        </p>
         {onRetry && (
           <div className="flex justify-end">
             <button
@@ -56,7 +56,10 @@ export default function StatusBanner({
             Generazione Blueprint Concettuale in corso...
           </p>
           <p className="mt-1 text-xs text-zinc-600 font-sans leading-relaxed">
-            L&apos;AI sta analizzando la voce Wikipedia, estraendo <span className="highlighter-yellow">6–8 moduli didattici</span>, definendo l&apos;elemento grafico centrale e contrassegnando le parole chiave.
+            L&apos;AI sta analizzando la voce Wikipedia, estraendo{" "}
+            <span className="highlighter-yellow">6–8 moduli didattici</span>,
+            definendo l&apos;elemento grafico centrale e contrassegnando le
+            parole chiave.
           </p>
         </div>
       </div>
@@ -72,7 +75,10 @@ export default function StatusBanner({
             Disegno dell&apos;Infografica Sketchnote in corso...
           </p>
           <p className="mt-1 text-xs text-zinc-600 font-sans leading-relaxed">
-            Il modello grafico sta disegnando a mano su foglio bianco: figure umane semplici con prop identificativi, connettori a freccia, doodle e testo con tratti di <span className="highlighter-teal">evidenziatore traslucido</span>.
+            Il modello grafico sta disegnando a mano su foglio bianco: figure
+            umane semplici con prop identificativi, connettori a freccia, doodle
+            e testo con tratti di{" "}
+            <span className="highlighter-teal">evidenziatore traslucido</span>.
           </p>
         </div>
       </div>

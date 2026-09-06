@@ -15,6 +15,7 @@ import pirandello from "@/assets/appunti-visivi-luigi-pirandello.png";
 import fotosintesi2 from "@/assets/appunti-visivi-fotosintesi-clorofilliana(1).png";
 import secondaGuerraMondiale from "@/assets/seconda-guerra-mondiale.png";
 import starwars from "@/assets/appunti-visivi-star-wars-episodio-iii-la-vendetta-dei-sith.png";
+import laGuerraDiTroia from "@/assets/appunti-visivi-guerra-di-troia.png";
 
 type Slide = {
   image: StaticImageData;
@@ -80,6 +81,11 @@ const slides: Slide[] = [
     title: "Star Wars - La vendetta dei Sith",
     description:
       "Trama, personaggi principali e temi dell'ultimo film della trilogia prequel di Star Wars.",
+  },
+  {
+    image: laGuerraDiTroia,
+    title: "La Guerra di Troia",
+    description: "Protagonisti e linea temporale della famosa Guerra di Troia",
   },
 ];
 

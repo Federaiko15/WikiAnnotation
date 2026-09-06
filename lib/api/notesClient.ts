@@ -10,6 +10,7 @@ export type BlueprintApiParams = {
   learningLevel: LearningLevel;
   outputLanguage: OutputLanguage;
   language?: "it" | "en";
+  textId?: string;
 };
 
 export type BlueprintApiResponse = {
@@ -49,6 +50,7 @@ export async function fetchBlueprint(
       pageKey: params.pageKey,
       learningLevel: params.learningLevel,
       outputLanguage: params.outputLanguage,
+      textId: params.textId,
     }),
   });
 
@@ -88,4 +90,26 @@ export async function fetchGeneratedImage(
   }
 
   return data as ImageApiResponse;
+}
+
+export async function saveUserText(userText: string): Promise<string> {
+  const response = await fetch("/api/text", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: userText }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || "Errore nel salvataggio del testo.");
+  }
+
+  return data.id;
+}
+
+export async function getUserText(id: string): Promise<string | null> {
+  const response = await fetch(`/api/text?id=${encodeURIComponent(id)}`);
+  if (!response.ok) return null;
+  const data = await response.json();
+  return data.text ?? null;
 }

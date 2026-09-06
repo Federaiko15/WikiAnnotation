@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.106",
+    "@upstash/redis": "^1.38.4",
     "ai": "^6.0.275",
     "cheerio": "^1.2.0",
+    "nanoid": "^5.1.16",
     "next": "16.3.3",
     "openai": "^6.49.0",
     "react": "19.2.8",

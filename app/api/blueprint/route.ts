@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseWikipediaPage } from "@/lib/wikipedia/parseWikipediaPage";
 import { generateBlueprint } from "@/lib/ai/services/generateBlueprint";
+import { redis } from "@/lib/redis";
+import { ParsedWikiPage } from "@/lib/wikipedia/types";
 
 const requestSchema = z.object({
   language: z.enum(["it", "en"]),
@@ -17,23 +19,55 @@ const requestSchema = z.object({
   ]),
 
   outputLanguage: z.enum(["it", "en"]),
+  textId: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { language, pageKey, learningLevel, outputLanguage } =
+    const { language, pageKey, learningLevel, outputLanguage, textId } =
       requestSchema.parse(body);
 
     console.log(
       `[API /api/blueprint] Inizio richiesta per: ${pageKey} (${learningLevel}, ${outputLanguage})`,
     );
-
-    const parsedPage = await parseWikipediaPage(language, pageKey);
     console.log(
-      `[API /api/blueprint] Pagina Wikipedia recuperata: "${parsedPage.title}" con ${parsedPage.sections.length} sezioni`,
+      `[API /api/blueprint] Inizio richiesta per: ${pageKey} | textId:`,
+      textId,
     );
+    let parsedPage: ParsedWikiPage;
+
+    if (textId) {
+      // 1. Recupero del testo custom da Redis
+      const customText = await redis.get<string>(textId);
+
+      if (!customText) {
+        return NextResponse.json(
+          { error: "Il testo personalizzato non è stato trovato o è scaduto." },
+          { status: 404 },
+        );
+      }
+
+      // 2. Adattamento del testo nel formato che il generatore si aspetta
+      parsedPage = {
+        title: pageKey,
+        sourceUrl: "Testo inserito dall'utente",
+        sections: [
+          {
+            title: "Testo di riferimento",
+            level: 1,
+            content: [customText],
+            text: customText,
+          },
+        ],
+      };
+    } else {
+      parsedPage = await parseWikipediaPage(language, pageKey);
+      console.log(
+        `[API /api/blueprint] Pagina Wikipedia recuperata: "${parsedPage.title}" con ${parsedPage.sections.length} sezioni`,
+      );
+    }
 
     if (parsedPage.sections.length === 0) {
       return NextResponse.json(
@@ -74,7 +108,9 @@ export async function POST(request: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
-          error: "Dati di richiesta non validi: " + error.issues.map((i) => i.message).join(", "),
+          error:
+            "Dati di richiesta non validi: " +
+            error.issues.map((i) => i.message).join(", "),
         },
         {
           status: 400,
