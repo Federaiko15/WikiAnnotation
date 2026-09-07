@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     );
     let parsedPage: ParsedWikiPage;
 
-    if (textId) {
+    if (textId !== undefined) {
       // 1. Recupero del testo custom da Redis
       const customText = await redis.get<string>(textId);
 
@@ -123,12 +123,14 @@ export async function POST(request: NextRequest) {
         ? error.message
         : "Non è stato possibile creare il blueprint degli appunti.";
 
+    const status = message.includes("429") ? 429 : 500;
+
     return NextResponse.json(
       {
         error: message,
       },
       {
-        status: 500,
+        status,
       },
     );
   }

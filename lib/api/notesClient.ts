@@ -10,7 +10,7 @@ export type BlueprintApiParams = {
   learningLevel: LearningLevel;
   outputLanguage: OutputLanguage;
   language?: "it" | "en";
-  textId?: string;
+  textId?: string | undefined;
 };
 
 export type BlueprintApiResponse = {
@@ -40,6 +40,7 @@ export type ImageApiResponse = {
 export async function fetchBlueprint(
   params: BlueprintApiParams,
 ): Promise<BlueprintApiResponse> {
+  const userText = params.textId == undefined ? false : true;
   const response = await fetch("/api/blueprint", {
     method: "POST",
     headers: {
@@ -50,7 +51,7 @@ export async function fetchBlueprint(
       pageKey: params.pageKey,
       learningLevel: params.learningLevel,
       outputLanguage: params.outputLanguage,
-      textId: params.textId,
+      ...(userText ? { textId: params.textId } : { textId: undefined }),
     }),
   });
 

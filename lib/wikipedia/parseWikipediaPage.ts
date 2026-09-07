@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 
 import type { ParsedWikiPage, WikiSection } from "./types";
+import { WIKIPEDIA_USER_AGENT } from "./constants";
 
 const EXCLUDED_SECTION_TITLES = new Set([
   "note",
@@ -58,10 +59,16 @@ export async function parseWikipediaPage(
   const response = await fetch(articleUrl, {
     headers: {
       Accept: "text/html",
+      "User-Agent": WIKIPEDIA_USER_AGENT,
     },
   });
 
   if (!response.ok) {
+    if (response.status === 429) {
+      throw new Error(
+        "Wikipedia sta limitando temporaneamente le richieste (errore 429: troppe richieste). Attendi qualche secondo prima di riprovare.",
+      );
+    }
     throw new Error(
       `Impossibile recuperare la pagina Wikipedia (${response.status}).`,
     );
