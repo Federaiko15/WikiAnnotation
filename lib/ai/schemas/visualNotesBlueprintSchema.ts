@@ -112,8 +112,8 @@ export const visualNotesBlueprintSchema = z.object({
   modules: z
     .array(blueprintModuleSchema)
     .min(6)
-    .max(8)
-    .describe("Six to eight non-redundant knowledge modules."),
+    .max(10)
+    .describe("Six to ten non-redundant knowledge modules."),
 
   sourceNotice: z
     .string()

@@ -1,6 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
+
+  // Nasconde l'header nella pagina di autenticazione
+  if (pathname?.startsWith("/auth")) {
+    return null;
+  }
+
   return (
     <header className="header-container">
       <div className="header-wrapper">
@@ -21,3 +31,4 @@ export default function Header() {
     </header>
   );
 }
+

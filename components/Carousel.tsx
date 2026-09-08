@@ -5,17 +5,18 @@ import Image, { StaticImageData } from "next/image";
 
 // 1. Importa le immagini dalla cartella assets
 import alessandroMagno from "@/assets/alessandro-magno.png";
-import aristotele from "@/assets/appunti-visivi-aristotele.png";
+import vulcano from "@/assets/appunti-visivi-vulcano.png";
 import divinaCommedia from "@/assets/appunti-visivi-divina-commedia.png";
 import signoreDegliAnelli from "@/assets/appunti-visivi-il-signore-degli-anelli.png";
 import fotosintesi1 from "@/assets/appunti-visivi-fotosintesi-clorofilliana.png";
 import ilReLeone from "@/assets/appunti-visivi-il-re-leone.png";
-import harryPotter from "@/assets/appunti-visivi-harry-potter-e-il-calice-di-fuoco.png";
+import gwt from "@/assets/appunti-visivi-gwt.png";
 import pirandello from "@/assets/appunti-visivi-luigi-pirandello.png";
 import fotosintesi2 from "@/assets/appunti-visivi-fotosintesi-clorofilliana(1).png";
 import secondaGuerraMondiale from "@/assets/seconda-guerra-mondiale.png";
 import starwars from "@/assets/appunti-visivi-star-wars-episodio-iii-la-vendetta-dei-sith.png";
 import laGuerraDiTroia from "@/assets/appunti-visivi-guerra-di-troia.png";
+import dna from "@/assets/appunti-visivi-dna.png";
 
 type Slide = {
   image: StaticImageData;
@@ -31,9 +32,9 @@ const slides: Slide[] = [
     description: "Mappa concettuale sulle conquiste e l'impero macedone.",
   },
   {
-    image: aristotele,
-    title: "Aristotele",
-    description: "Chi e cosa ha scritto il filosofo Aristotele",
+    image: vulcano,
+    title: "I Vulcani",
+    description: "Struttura e composizione dei vulcani",
   },
   {
     image: divinaCommedia,
@@ -57,9 +58,9 @@ const slides: Slide[] = [
       "Archetipi narrativi, cerchio della vita e riferimenti shakespeareiani.",
   },
   {
-    image: harryPotter,
-    title: "Harry Potter e il Calice di Fuoco",
-    description: "Trama e informazioni sul terzo film della saga Harry Potter",
+    image: gwt,
+    title: "GWT",
+    description: "Spiegazione della teoria - Global Neural Workspace Theort-",
   },
   {
     image: pirandello,
@@ -87,12 +88,22 @@ const slides: Slide[] = [
     title: "La Guerra di Troia",
     description: "Protagonisti e linea temporale della famosa Guerra di Troia",
   },
+  {
+    image: dna,
+    title: "DNA",
+    description:
+      "Descrizione della struttura, delle funzioni e delle dinamiche del DNA",
+  },
 ];
+type CarouselProps = {
+  className?: string;
+};
 
-export default function Carousel() {
+export default function Carousel({ className }: CarouselProps = {}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -102,21 +113,32 @@ export default function Carousel() {
     setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
-  // Auto-scrolling ogni 4 secondi (in pausa se hovered o se l'utente ha premuto Pausa)
+  // Auto-scrolling ogni 2.5 secondi (in pausa se hovered, se in zoom o se l'utente ha premuto Pausa)
   useEffect(() => {
-    if (!isPlaying || isHovered) return;
+    if (!isPlaying || isHovered || isZoomed) return;
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 3000);
+    }, 2500);
 
     return () => clearInterval(timer);
-  }, [isPlaying, isHovered]);
+  }, [isPlaying, isHovered, isZoomed]);
+
+  // Chiusura modal zoom con tasto Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsZoomed(false);
+    };
+    if (isZoomed) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isZoomed]);
 
   const current = slides[currentIndex];
 
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-8">
+    <section className={className ?? "mx-auto w-full max-w-4xl px-4 py-8"}>
       {/* Intestazione sezione carousel */}
       <div className="mb-4 flex items-center justify-between border-b-2 border-dashed border-zinc-200 pb-2">
         <div className="flex items-center gap-2">
@@ -150,19 +172,19 @@ export default function Carousel() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Titolo e didascalia della slide corrente */}
-        <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        {/* Titolo e didascalia della slide corrente con altezza minima fissa */}
+        <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 min-h-[56px]">
           <div>
             <div className="sketchnote-title-box-sm px-3 py-1 text-sm sm:text-base inline-block">
               {current.title}
             </div>
-            <p className="mt-1 text-xs text-zinc-600 font-sans">
+            <p className="mt-1 text-xs text-zinc-600 font-sans line-clamp-2">
               {current.description}
             </p>
           </div>
 
           {/* Pulsanti di navigazione Prec / Succ */}
-          <div className="flex items-center gap-2 self-end sm:self-auto">
+          <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
             <button
               type="button"
               onClick={prevSlide}
@@ -182,14 +204,27 @@ export default function Carousel() {
           </div>
         </div>
 
-        {/* Visualizzatore immagine */}
-        <div className="relative mx-auto flex w-full items-center justify-center rounded border-2 border-zinc-900 bg-zinc-50 p-2 sm:p-4 shadow-[3px_3px_0px_#18181b]">
+        {/* Visualizzatore immagine ad ALTEZZA GENEROSA e FISSA:
+            Garantisce che il testo nelle pagine verticali sia grande e leggibile
+            e che l'altezza non collassi mai quando compaiono immagini orizzontali */}
+        <div className="relative mx-auto flex h-[480px] sm:h-[600px] md:h-[680px] lg:h-[750px] xl:h-[820px] w-full items-center justify-center rounded border-2 border-zinc-900 bg-zinc-50 p-2 sm:p-4 shadow-[3px_3px_0px_#18181b] overflow-hidden group">
           <Image
             src={current.image}
             alt={`Esempio appunti visivi: ${current.title}`}
-            className="h-auto max-h-[60vh] w-auto rounded object-contain transition-opacity duration-300"
+            className="max-h-full max-w-full h-auto w-auto rounded object-contain transition-opacity duration-300 select-none cursor-pointer"
             priority={currentIndex === 0}
+            onClick={() => setIsZoomed(true)}
           />
+
+          {/* Pulsante Ingrandisci per leggere tutti i dettagli a pieno schermo */}
+          <button
+            type="button"
+            onClick={() => setIsZoomed(true)}
+            className="absolute bottom-3 right-3 bg-white/95 hover:bg-white text-zinc-900 border-2 border-zinc-900 rounded px-2.5 py-1 text-xs font-sketch font-bold uppercase shadow-[2px_2px_0px_#18181b] opacity-80 hover:opacity-100 transition-all cursor-pointer flex items-center gap-1.5"
+            title="Ingrandisci a tutto schermo per leggere i dettagli"
+          >
+            <span>🔍 Ingrandisci</span>
+          </button>
         </div>
 
         {/* Indicatori a pallino / barretta in basso */}
@@ -209,6 +244,42 @@ export default function Carousel() {
           ))}
         </div>
       </div>
+
+      {/* Modal Lightbox a tutto schermo per visualizzare e leggere l'immagine nei minimi dettagli */}
+      {isZoomed && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6"
+          onClick={() => setIsZoomed(false)}
+        >
+          <div
+            className="relative max-w-[95vw] max-h-[95vh] flex flex-col items-center bg-white p-3 sm:p-5 rounded-lg border-3 border-zinc-900 shadow-[8px_8px_0px_#ea580c]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-full flex items-center justify-between mb-3 pb-2 border-b-2 border-dashed border-zinc-300">
+              <div className="flex items-center gap-2">
+                <span className="sketch-badge-orange text-xs">Dettaglio</span>
+                <span className="font-sketch font-bold text-base sm:text-lg text-zinc-900">
+                  {current.title}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsZoomed(false)}
+                className="text-xs font-sketch font-bold px-3 py-1 bg-zinc-100 hover:bg-zinc-200 border-2 border-zinc-900 rounded cursor-pointer shadow-[2px_2px_0px_#18181b]"
+              >
+                ✕ Chiudi (Esc)
+              </button>
+            </div>
+            <div className="relative flex items-center justify-center overflow-auto max-h-[82vh]">
+              <Image
+                src={current.image}
+                alt={current.title}
+                className="max-h-[80vh] w-auto h-auto object-contain rounded"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
