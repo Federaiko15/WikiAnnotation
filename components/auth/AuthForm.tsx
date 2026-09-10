@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { registerUser } from "@/lib/auth/authFunctions";
+import { loginUser, registerUser } from "@/lib/auth/authFunctions";
 import { useRouter } from "next/navigation";
 
 export default function AuthForm() {
@@ -44,7 +44,13 @@ export default function AuthForm() {
         setError("Tutti i campi sono necessari!");
         return;
       }
-      // Logica accesso
+      const response = await loginUser(email.trim(), password);
+      if (response.success) {
+        router.replace("/");
+      } else {
+        setError(response.error);
+        return;
+      }
     }
   };
 
