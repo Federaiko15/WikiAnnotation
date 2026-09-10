@@ -1,36 +1,39 @@
-"use server";
-
-import { AuthFormState } from "./types";
+type RegisterResult = { success: true } | { success: false; error: string };
 
 export async function registerUser(
-  prevState: AuthFormState,
-  formData: FormData
-): Promise<AuthFormState> {
-  const username = (formData.get("username") as string)?.trim();
-  const email = (formData.get("email") as string)?.trim();
-  const password = (formData.get("password") as string)?.trim();
+  username: string,
+  email: string,
+  password: string,
+): Promise<RegisterResult> {
+  try {
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
+    });
 
-  // Validazione di base
-  if (!username || !email || !password) {
+    const data = await res.json();
+
+    if (res.ok) {
+      return {
+        success: true,
+      };
+    }
+
     return {
       success: false,
-      message: "Tutti i campi sono obbligatori.",
+      error: data.message ?? "Registrazione non riuscita...",
     };
-  }
-
-  if (password.length < 6) {
+  } catch (error) {
     return {
       success: false,
-      message: "La password deve contenere almeno 6 caratteri.",
+      error: "Registrazione non avvenuta...",
     };
   }
-
-  // Esempio log / elaborazione dati
-  console.log("Registrazione completata per:", { username, email });
-
-  return {
-    success: true,
-    message: `Benvenuto, ${username}! Registrazione completata con successo.`,
-  };
 }
-

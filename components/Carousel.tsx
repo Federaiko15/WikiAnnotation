@@ -97,9 +97,13 @@ const slides: Slide[] = [
 ];
 type CarouselProps = {
   className?: string;
+  compact?: boolean;
 };
 
-export default function Carousel({ className }: CarouselProps = {}) {
+export default function Carousel({
+  className,
+  compact = false,
+}: CarouselProps = {}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -140,14 +144,18 @@ export default function Carousel({ className }: CarouselProps = {}) {
   return (
     <section className={className ?? "mx-auto w-full max-w-4xl px-4 py-8"}>
       {/* Intestazione sezione carousel */}
-      <div className="mb-4 flex items-center justify-between border-b-2 border-dashed border-zinc-200 pb-2">
+      <div className="mb-3 sm:mb-4 flex items-center justify-between border-b-2 border-dashed border-zinc-200 pb-2">
         <div className="flex items-center gap-2">
-          <span className="sketch-badge-orange">Galleria Esempi</span>
-          <h2 className="font-sketch font-bold uppercase tracking-wider text-base sm:text-lg text-zinc-900">
-            Esempi di Appunti Visivi Generati
+          <span className="sketch-badge-orange text-xs">Galleria Esempi</span>
+          <h2
+            className={`font-sketch font-bold uppercase tracking-wider text-zinc-900 ${
+              compact ? "text-sm sm:text-base" : "text-base sm:text-lg"
+            }`}
+          >
+            Esempi di Appunti Visivi
           </h2>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
             onClick={() => setIsPlaying(!isPlaying)}
@@ -161,24 +169,34 @@ export default function Carousel({ className }: CarouselProps = {}) {
             <span>{isPlaying ? "⏸ In pausa" : "▶ Riproduci"}</span>
           </button>
           <span className="text-xs font-sketch text-zinc-500">
-            Slide {currentIndex + 1} di {slides.length}
+            {currentIndex + 1} / {slides.length}
           </span>
         </div>
       </div>
 
       {/* Riquadro del Carousel in stile Sketchnote con pausa all'hover */}
       <div
-        className="sketch-panel relative overflow-hidden bg-white p-4 sm:p-6 shadow-[5px_5px_0px_#18181b]"
+        className={`sketch-panel relative overflow-hidden bg-white shadow-[5px_5px_0px_#18181b] ${
+          compact ? "p-3 sm:p-4" : "p-4 sm:p-6"
+        }`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Titolo e didascalia della slide corrente con altezza minima fissa */}
-        <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 min-h-[56px]">
+        {/* Titolo e didascalia della slide corrente con altezza minima */}
+        <div
+          className={`mb-3 sm:mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 ${
+            compact ? "min-h-[44px]" : "min-h-[56px]"
+          }`}
+        >
           <div>
-            <div className="sketchnote-title-box-sm px-3 py-1 text-sm sm:text-base inline-block">
+            <div
+              className={`sketchnote-title-box-sm inline-block ${
+                compact ? "px-2.5 py-0.5 text-xs sm:text-sm" : "px-3 py-1 text-sm sm:text-base"
+              }`}
+            >
               {current.title}
             </div>
-            <p className="mt-1 text-xs text-zinc-600 font-sans line-clamp-2">
+            <p className="mt-1 text-xs text-zinc-600 font-sans line-clamp-1 sm:line-clamp-2">
               {current.description}
             </p>
           </div>
@@ -188,7 +206,9 @@ export default function Carousel({ className }: CarouselProps = {}) {
             <button
               type="button"
               onClick={prevSlide}
-              className="sketch-btn-white text-xs px-3 py-1.5"
+              className={`sketch-btn-white ${
+                compact ? "text-[11px] px-2.5 py-1" : "text-xs px-3 py-1.5"
+              }`}
               aria-label="Slide precedente"
             >
               ← Prec
@@ -196,7 +216,9 @@ export default function Carousel({ className }: CarouselProps = {}) {
             <button
               type="button"
               onClick={nextSlide}
-              className="sketch-btn-orange text-xs px-3 py-1.5"
+              className={`sketch-btn-orange ${
+                compact ? "text-[11px] px-2.5 py-1" : "text-xs px-3 py-1.5"
+              }`}
               aria-label="Slide successiva"
             >
               Succ →
@@ -204,10 +226,14 @@ export default function Carousel({ className }: CarouselProps = {}) {
           </div>
         </div>
 
-        {/* Visualizzatore immagine ad ALTEZZA GENEROSA e FISSA:
-            Garantisce che il testo nelle pagine verticali sia grande e leggibile
-            e che l'altezza non collassi mai quando compaiono immagini orizzontali */}
-        <div className="relative mx-auto flex h-[480px] sm:h-[600px] md:h-[680px] lg:h-[750px] xl:h-[820px] w-full items-center justify-center rounded border-2 border-zinc-900 bg-zinc-50 p-2 sm:p-4 shadow-[3px_3px_0px_#18181b] overflow-hidden group">
+        {/* Visualizzatore immagine */}
+        <div
+          className={`relative mx-auto flex w-full items-center justify-center rounded border-2 border-zinc-900 bg-zinc-50 p-2 sm:p-3 shadow-[3px_3px_0px_#18181b] overflow-hidden group ${
+            compact
+              ? "h-[360px] sm:h-[460px] md:h-[520px] lg:h-[580px] xl:h-[630px]"
+              : "h-[480px] sm:h-[600px] md:h-[680px] lg:h-[750px] xl:h-[820px]"
+          }`}
+        >
           <Image
             src={current.image}
             alt={`Esempio appunti visivi: ${current.title}`}
@@ -220,7 +246,7 @@ export default function Carousel({ className }: CarouselProps = {}) {
           <button
             type="button"
             onClick={() => setIsZoomed(true)}
-            className="absolute bottom-3 right-3 bg-white/95 hover:bg-white text-zinc-900 border-2 border-zinc-900 rounded px-2.5 py-1 text-xs font-sketch font-bold uppercase shadow-[2px_2px_0px_#18181b] opacity-80 hover:opacity-100 transition-all cursor-pointer flex items-center gap-1.5"
+            className="absolute bottom-2.5 right-2.5 bg-white/95 hover:bg-white text-zinc-900 border-2 border-zinc-900 rounded px-2.5 py-1 text-xs font-sketch font-bold uppercase shadow-[2px_2px_0px_#18181b] opacity-80 hover:opacity-100 transition-all cursor-pointer flex items-center gap-1.5"
             title="Ingrandisci a tutto schermo per leggere i dettagli"
           >
             <span>🔍 Ingrandisci</span>
@@ -228,17 +254,17 @@ export default function Carousel({ className }: CarouselProps = {}) {
         </div>
 
         {/* Indicatori a pallino / barretta in basso */}
-        <div className="mt-4 flex items-center justify-center gap-2">
+        <div className="mt-3 sm:mt-4 flex items-center justify-center gap-1.5 sm:gap-2">
           {slides.map((_, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setCurrentIndex(index)}
               aria-label={`Vai alla slide ${index + 1}`}
-              className={`h-3 rounded-full border-2 border-zinc-900 transition-all ${
+              className={`h-2.5 sm:h-3 rounded-full border-2 border-zinc-900 transition-all ${
                 currentIndex === index
-                  ? "w-8 bg-[#ea580c] shadow-[1px_1px_0px_#18181b]"
-                  : "w-3 bg-white hover:bg-zinc-200"
+                  ? "w-6 sm:w-8 bg-[#ea580c] shadow-[1px_1px_0px_#18181b]"
+                  : "w-2.5 sm:w-3 bg-white hover:bg-zinc-200"
               }`}
             />
           ))}

@@ -1,101 +1,171 @@
 "use client";
 
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
+import { useState } from "react";
 import { registerUser } from "@/lib/auth/authFunctions";
-import { AuthFormState } from "@/lib/auth/types";
-
-// useFormStatus DEVE essere chiamato all'interno di un componente figlio di <form>
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="w-full py-2.5 px-4 font-sketch text-lg tracking-wider uppercase bg-orange-500 hover:bg-orange-600 text-white font-bold border-2 border-zinc-900 rounded shadow-[3px_3px_0px_#18181b] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181b] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-    >
-      {pending ? "Registrazione in corso..." : "Registrati"}
-    </button>
-  );
-}
-
-const initialState: AuthFormState = {
-  success: false,
-  message: "",
-};
+import { useRouter } from "next/navigation";
 
 export default function AuthForm() {
-  // In React 19 si usa useActionState da 'react' (evoluzione di useFormState)
-  const [state, formAction] = useActionState(registerUser, initialState);
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [register, setRegister] = useState<boolean>(true);
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    if (register) {
+      if (!username.trim() || !password || !email.trim()) {
+        setError("Tutti i campi sono necessari!");
+        return;
+      }
+      setIsLoading(true);
+      try {
+        const response = await registerUser(
+          username.trim(),
+          email.trim(),
+          password,
+        );
+        if (response.success) {
+          setRegister(false);
+        } else {
+          setError(response.error);
+        }
+      } catch {
+        setError("Errore imprevisto durante la registrazione.");
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      if (!email.trim() || !password) {
+        setError("Tutti i campi sono necessari!");
+        return;
+      }
+      // Logica accesso
+    }
+  };
+
+  const toggleFunction = () => {
+    setRegister((prev) => !prev);
+    setError("");
+  };
 
   return (
-    <form action={formAction} className="space-y-4">
-      {state.message && (
-        <div
-          className={`p-3 rounded border-2 text-sm font-medium ${
-            state.success
-              ? "bg-teal-50 border-teal-600 text-teal-900"
-              : "bg-red-50 border-red-500 text-red-900"
-          }`}
-        >
-          {state.message}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {register && (
+        <div>
+          <label
+            htmlFor="username"
+            className="block text-xs sm:text-sm font-sketch font-bold uppercase tracking-wider text-zinc-800 mb-1"
+          >
+            Nome utente
+          </label>
+
+          <input
+            id="username"
+            name="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="es. mario_rossi"
+            className="w-full px-3.5 py-2.5 border-2 border-zinc-900 rounded bg-white text-zinc-900 text-sm placeholder:text-zinc-400 placeholder:italic shadow-[2px_2px_0px_#18181b] focus:outline-none focus:border-zinc-900 focus:ring-2 focus:ring-orange-400 focus:shadow-[3px_3px_0px_#ea580c] transition-all"
+          />
         </div>
       )}
 
       <div>
         <label
-          htmlFor="username"
-          className="block text-sm font-sketch font-bold uppercase tracking-wider text-zinc-700 mb-1"
-        >
-          Nome utente
-        </label>
-        <input
-          id="username"
-          name="username"
-          type="text"
-          required
-          placeholder="mario_rossi"
-          className="w-full px-3 py-2 border-2 border-zinc-900 rounded bg-white text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
-        />
-      </div>
-
-      <div>
-        <label
           htmlFor="email"
-          className="block text-sm font-sketch font-bold uppercase tracking-wider text-zinc-700 mb-1"
+          className="block text-xs sm:text-sm font-sketch font-bold uppercase tracking-wider text-zinc-800 mb-1"
         >
           Email
         </label>
+
         <input
           id="email"
           name="email"
           type="email"
-          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="mario@esempio.it"
-          className="w-full px-3 py-2 border-2 border-zinc-900 rounded bg-white text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="w-full px-3.5 py-2.5 border-2 border-zinc-900 rounded bg-white text-zinc-900 text-sm placeholder:text-zinc-400 placeholder:italic shadow-[2px_2px_0px_#18181b] focus:outline-none focus:border-zinc-900 focus:ring-2 focus:ring-orange-400 focus:shadow-[3px_3px_0px_#ea580c] transition-all"
         />
       </div>
 
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-sketch font-bold uppercase tracking-wider text-zinc-700 mb-1"
+          className="block text-xs sm:text-sm font-sketch font-bold uppercase tracking-wider text-zinc-800 mb-1"
         >
           Password
         </label>
+
         <input
           id="password"
           name="password"
           type="password"
-          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
-          className="w-full px-3 py-2 border-2 border-zinc-900 rounded bg-white text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="w-full px-3.5 py-2.5 border-2 border-zinc-900 rounded bg-white text-zinc-900 text-sm placeholder:text-zinc-400 placeholder:italic shadow-[2px_2px_0px_#18181b] focus:outline-none focus:border-zinc-900 focus:ring-2 focus:ring-orange-400 focus:shadow-[3px_3px_0px_#ea580c] transition-all"
         />
       </div>
 
-      <SubmitButton />
+      {error && (
+        <div className="p-2.5 border-2 border-red-600 bg-red-50 text-red-700 text-xs sm:text-sm rounded font-sketch font-bold shadow-[2px_2px_0px_#ef4444] flex items-center gap-2">
+          <span className="text-base leading-none">⚠️</span>
+          <span>{error}</span>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={isLoading}
+        className="w-full sketch-btn-orange py-2.5 text-base flex items-center justify-center gap-2 mt-2 cursor-pointer transition-all"
+      >
+        {isLoading ? (
+          <span>Elaborazione...</span>
+        ) : (
+          <>
+            <span>{register ? "Registrati" : "Accedi"}</span>
+            <span aria-hidden="true" className="font-sans font-bold">
+              →
+            </span>
+          </>
+        )}
+      </button>
+
+      <div className="relative my-3 flex items-center justify-center">
+        <div className="w-full border-t-2 border-dashed border-zinc-200" />
+        <span className="absolute bg-white px-2.5 font-sketch text-xs text-zinc-400 uppercase tracking-wider">
+          oppure
+        </span>
+      </div>
+
+      <button
+        type="button"
+        onClick={toggleFunction}
+        className="w-full sketch-btn-white py-2 text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
+      >
+        {register ? (
+          <span>
+            Hai già un account?{" "}
+            <strong className="text-orange-600 underline decoration-2">
+              Accedi
+            </strong>
+          </span>
+        ) : (
+          <span>
+            Non hai un account?{" "}
+            <strong className="text-orange-600 underline decoration-2">
+              Registrati
+            </strong>
+          </span>
+        )}
+      </button>
     </form>
   );
 }
-
