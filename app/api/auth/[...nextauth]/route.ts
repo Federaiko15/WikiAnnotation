@@ -3,6 +3,7 @@ import connectDB from "@/lib/db";
 import NextAuth, { AuthOptions } from "next-auth";
 import User from "@/models/User";
 import bcrypt from "bcrypt";
+import GitHubProvider from "next-auth/providers/github";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -46,6 +47,10 @@ export const authOptions: AuthOptions = {
           return null;
         }
       },
+    }),
+    GitHubProvider({
+      clientId: process.env.AUTH_GITHUB_ID!,
+      clientSecret: process.env.AUTH_GITHUB_SECRET!,
     }),
   ],
   session: {

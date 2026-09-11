@@ -1,10 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { CgProfile } from "react-icons/cg";
 
 export default function Header() {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   // Nasconde l'header nella pagina di autenticazione
   if (pathname?.startsWith("/auth")) {
@@ -30,7 +34,24 @@ export default function Header() {
             Appunti Visivi Didattici
           </span>
           {!pathname?.startsWith("/profile") && (
-            <Link href="/profile">Profile</Link>
+            <Link
+              href="/profile"
+              className="flex items-center gap-1.5 sketch-btn-white py-1 px-2.5 text-xs"
+            >
+              {session?.user?.image ? (
+                <Image
+                  src={session.user.image}
+                  alt="Profile"
+                  width={20}
+                  height={20}
+                  unoptimized
+                  className="rounded-full"
+                />
+              ) : (
+                <CgProfile className="text-base" />
+              )}
+              <span>Profile</span>
+            </Link>
           )}
         </div>
       </div>

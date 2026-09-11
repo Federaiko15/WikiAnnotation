@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { loginUser, registerUser } from "@/lib/auth/authFunctions";
 import { useRouter } from "next/navigation";
+import GitHubButton from "@/components/auth/GitHubButton";
 
 export default function AuthForm() {
   const [username, setUsername] = useState<string>("");
@@ -144,34 +145,40 @@ export default function AuthForm() {
         )}
       </button>
 
-      <div className="relative my-3 flex items-center justify-center">
+      <div className="relative my-4 flex items-center justify-center">
         <div className="w-full border-t-2 border-dashed border-zinc-200" />
         <span className="absolute bg-white px-2.5 font-sketch text-xs text-zinc-400 uppercase tracking-wider">
           oppure
         </span>
       </div>
 
-      <button
-        type="button"
-        onClick={toggleFunction}
-        className="w-full sketch-btn-white py-2 text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
-      >
-        {register ? (
-          <span>
-            Hai già un account?{" "}
-            <strong className="text-orange-600 underline decoration-2">
-              Accedi
-            </strong>
-          </span>
-        ) : (
-          <span>
-            Non hai un account?{" "}
-            <strong className="text-orange-600 underline decoration-2">
-              Registrati
-            </strong>
-          </span>
-        )}
-      </button>
+      <GitHubButton
+        text={register ? "Registrati con GitHub" : "Accedi con GitHub"}
+      />
+
+      <div className="pt-2">
+        <button
+          type="button"
+          onClick={toggleFunction}
+          className="w-full sketch-btn-white py-2 text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
+        >
+          {register ? (
+            <span>
+              Hai già un account?{" "}
+              <strong className="text-orange-600 underline decoration-2">
+                Accedi
+              </strong>
+            </span>
+          ) : (
+            <span>
+              Non hai un account?{" "}
+              <strong className="text-orange-600 underline decoration-2">
+                Registrati
+              </strong>
+            </span>
+          )}
+        </button>
+      </div>
     </form>
   );
 }

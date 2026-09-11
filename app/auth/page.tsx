@@ -24,7 +24,6 @@ export default function Auth() {
               Wikipedia o testo personalizzato.
             </p>
           </div>
-
           <AuthForm />
         </div>
 

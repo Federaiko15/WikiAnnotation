@@ -10,7 +10,7 @@ export type ImageAspectRatio = "3:4" | "1:1" | "9:16" | "16:9";
 export type GenerateImageInput = {
   blueprint: VisualNotesBlueprint;
   outputLanguage: "it" | "en";
-  aspectRatio?: ImageAspectRatio;
+  aspectRatio: ImageAspectRatio;
   annotationStyle: ImageStyle;
 };
 
@@ -26,22 +26,24 @@ export type GenerateImageOutput = {
 export async function generateImageFromBlueprint({
   blueprint,
   outputLanguage,
-  aspectRatio = "3:4",
+  aspectRatio,
   annotationStyle,
 }: GenerateImageInput): Promise<GenerateImageOutput> {
   const agent = createImageAgent(blueprint, outputLanguage, annotationStyle);
 
-  const imageSize =
-    aspectRatio === "1:1"
-      ? "1024x1024"
-      : aspectRatio === "16:9"
-        ? "1536x1024"
-        : "1024x1536";
+  const imageSizes: Record<ImageAspectRatio, `${number}x${number}`> = {
+    "1:1": "1024x1024",
+    "16:9": "1536x1024",
+    "9:16": "1024x1536",
+    "3:4": "1024x1365",
+  };
+
+  const imageSize = imageSizes[aspectRatio];
 
   const finalPrompt = [agent.system, "", agent.prompt].join("\n");
 
   const result = await generateImage({
-    model: openai.image("gpt-image-2"),
+    model: openai.image("gpt-image-2.5-flare"),
     prompt: finalPrompt,
     size: imageSize,
     n: 1,
