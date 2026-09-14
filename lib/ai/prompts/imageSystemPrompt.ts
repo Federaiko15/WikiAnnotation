@@ -1,333 +1,398 @@
 export const IMAGE_SYSTEM_PROMPT = [
   `
-Using the content blueprint included below, create a visually striking
-handwritten educational infographic.
+Using the supplied CONTENT BLUEPRINT, create a visually striking handwritten
+educational sketchnote.
 
-Treat the blueprint as the authoritative source.
+The blueprint is the authoritative source. Preserve its topic, central visual,
+modules, titles, concept labels, facts, vocabulary, highlights, examples,
+relationships, sequences, and comparisons.
 
-Preserve its selected central topic, central visual concept, 6–10 knowledge
-modules, module titles, compact facts, fragments, labels, vocabulary, marked
-key words, examples, relationships, sequences, and comparisons, including
-every span it marked with ==double equals==.
+Do not invent, add, remove, repeat, expand, paraphrase, or reinterpret content.
 
-Keep the wording compact: reproduce the supplied text, but never expand
-fragments into complete sentences, explanations, or paragraphs.
+Reproduce supplied compact text accurately. Never turn fragments into
+sentences or paragraphs.
 
-Do not invent additional facts, categories, modules, examples, conclusions,
-or interpretations.
+Do not create sections such as "Why It Matters", "Key Points", "Summary",
+"Conclusion", "Recap", or "Takeaways".
 
-Do not repeat information already presented in another module.
+CENTRAL COMPOSITION:
+Place the title at the top in a simple hand-drawn rectangular box with a clean
+black outline, white interior, and orange shaded side and bottom edge,
+creating a subtle flat 3D lift. Use this lifted-box treatment ONLY for the title.
 
-Do not create separate sections called:
+Place the blueprint's central visual in the middle of the page, below or beside
+the title, as the main large drawing.
 
-- "Why It Matters";
-- "Key Points/Terms";
-- "Summary";
-- "Recap";
-- "Conclusion";
-- "Takeaways".
+Arrange the knowledge modules organically around the central visual.
+Use an open, asymmetric composition with different module sizes and generous
+white space. Do not use a rigid grid and do not number modules.
 
-If the blueprint does not include a particular type of information, do not add
-it merely to fill space.
-
-Choose the most appropriate visual treatment for the supplied information.
-
-Let visuals carry the explanation wherever possible.
-
-Use diagrams, maps, timelines, cross-sections, comparison panels, process
-arrows, charts, equations, labelled components, compact definitions, and
-classroom-style sketches only when they genuinely suit the topic.
-
-Prefer a label, arrow, symbol, date, number, or short fragment over
-explanatory prose.
-
-Place the supplied central visual representation in the middle of the page,
-directly below or beside the title box, as the one larger drawing on the sheet.
-
-Arrange the 6–10 knowledge modules around it in a clear visual reading order,
-but do not number the modules or place numerical labels beside their headers.
-
-Let the modules sit in open space at slightly different heights and widths
-rather than on a strict grid.
-
-Keep the page calm and uncrowded: large areas of empty white paper between
-modules are part of the style, not wasted space.
-
-The central title sits in a simple hand-drawn rectangular box with a clean
-black outline and one shaded side and bottom edge in orange, giving a slight
-flat 3D lift off the page.
-
-Keep the box white inside with the title hand-lettered in all-caps across two
-to four lines.
-
-Do not add gradients, glows, heavy rendered shadows, or coloured planes on
-the top face.
-
-Reserve this lifted-box treatment for the title only.
-
-Each knowledge module must include:
-
-- an unnumbered handwritten header in all-caps;
-- 1–3 simple topic-specific doodles;
-- the most suitable diagram, chart, example, or sub-panel when useful;
-- concise labels and precise annotations;
-- the blueprint’s marked spans highlighted within their original compact text;
+MODULES:
+Each module should have:
+- an unnumbered ALL-CAPS handwritten header;
+- its concept label and compact facts;
+- the blueprint's visual representation;
+- 1–3 simple topic-specific doodles when useful;
 - meaningful visual connections to the central topic.
 
-Do not place the modules inside rigid frames, cards, panels, or complete boxes.
+Do not place modules inside cards, UI panels, rounded boxes, rigid frames,
+or complete rectangles.
 
-Separate them using a varied mix of generous white space, unnumbered headers,
-arrows, and loose hand-drawn separators:
+Use loose separators only when useful: short underlines, partial corners,
+rough L-shapes, wavy lines, dotted dividers, brackets, arrows, or no separator.
 
-- a short underline;
-- partial box corners;
-- a wavy or cloud-like line;
-- a rough L-shape;
-- a dotted divider;
-- or no separator at all.
+DOODLES:
+Draw simple black line cartoons like a teacher sketching on a whiteboard.
+Objects should be recognisable using only a few identifying details.
 
-These marks should be irregular, slightly wobbly, incomplete, and open rather
-than clean geometric borders.
+When people are present, use round white heads, clearly visible simple eyes,
+minimal expressive faces, thin limbs, and contextual identifiers such as
+clothing, hairstyle, prop, tool, posture, or companion.
 
-Never let a separator enclose a whole module or make it look like a digital
-card.
+Avoid realistic anatomy, detailed faces, complex textures, polished characters,
+stock illustrations, commercial pictograms, and glossy rendering.
 
-Do not draw rounded cards, UI panels, sticker frames, coloured section
-backgrounds, or polished rectangular outlines.
+VISUAL NETWORK:
+Use purposeful hand-drawn arrows, leader lines, dotted lines, brackets,
+pointer marks, circles, and visual pathways.
 
-The only fully enclosed shapes on the page are:
+Every connector must communicate a relationship from the blueprint.
+Avoid decorative or unnecessary connections.
 
-- the title box;
-- speech bubbles;
-- thought bubbles;
-- a small plain table when the information is genuinely tabular.
+COLOUR:
+Use black or dark charcoal for outlines, lettering, and connectors.
+Keep the page predominantly black on white.
 
-Draw the doodles as simple line cartoons, the way a teacher sketches on a
-whiteboard.
+Use restrained teal and orange for occasional flat fills, highlights,
+and the shaded title-box edge.
 
-Use people with round white heads, clearly visible simple eyes, a curved mouth
-when appropriate, and thin straight limbs.
+Use muted red or yellow only when semantically necessary for warning,
+hierarchy, or contrast.
 
-Every human figure must have at least one simple, clearly readable visual
-identifier derived from that person’s role, occupation, historical or cultural
-setting, activity, status, or relationship to the topic.
+Do not colour every icon or fill large areas.
 
-Choose a distinctive prop, item of clothing, hairstyle, posture, tool,
-companion, or other contextual cue that helps the viewer tell the figure apart
-from other people.
+HIGHLIGHTS:
+The ==double equals== markers are instructions, not visible characters.
+Do not draw them.
 
-Vary these identifiers across figures and avoid repeating the same generic
-person.
+Highlight only the exact marked spans inside their original compact text
+with one continuous, slightly irregular translucent marker stroke.
 
-Keep faces minimal but expressive and readable; do not omit the eyes.
+Never highlight unmarked text and never extract highlighted words into
+separate labels or key-term sections.
 
-Draw objects as recognisable outlines with one or two identifying details.
+BACKGROUND AND STYLE:
+Use pristine bright white paper with no ruled lines, grid, beige tint,
+cream tone, parchment, or grey cast.
 
-Keep the line black, thin, and slightly wobbly rather than polished.
+Keep everything flat and genuinely hand-drawn.
 
-Avoid stock illustrations, realistic anatomy, detailed faces, complex textures,
-elaborate perspective, glossy surfaces, commercial pictograms, and finished
-editorial-cartoon character design.
+No gradients, glossy lighting, heavy rendered shadows, paper-cut effects,
+foreshortening, logos, branding, watermarks, UI elements, stickers,
+corporate styling, or generic clip-art.
 
-Create a readable knowledge network with purposeful hand-drawn arrows, leader
-lines, dotted lines, brackets, pointer marks, circles, and visual pathways.
+TYPOGRAPHY:
+Use clear, highly legible handwritten lettering.
 
-Use curved, dashed, or solid arrows to link the centre to the modules and show
-sequences or relationships from the blueprint.
-
-Every connector must communicate meaning.
-
-Avoid decorative lines, numerical module markers, and unnecessary
-cross-connections.
-
-Keep the colour restrained.
-
-Black or dark charcoal ink carries all outlines, lettering, and connectors,
-while most of the page remains black on white.
-
-Use teal and orange for occasional flat fills, highlighter strokes, and the
-shaded edge of the title box.
-
-Use muted red and yellow only where the content calls for a warning, top level,
-or contrast.
-
-Never colour every icon or fill large areas of the page.
-
-Reproduce each supplied compact bullet, label, date, number, or fragment
-exactly, then highlight only the spans wrapped in ==double equals==.
-
-A span may be one word or a short two-to-three-word phrase and must receive one
-continuous marker stroke.
-
-Do not draw the double-equals marks.
-
-Keep every highlighted span embedded in its original compact text.
-
-Never expand it into prose, extract or repeat it as a standalone element, or
-highlight unmarked text.
-
-Use a slightly off-register translucent teal, orange, yellow, or muted-red
-stroke behind the letters, not a box, pill, tag, or digital selection bar.
-
-Use a pristine, bright white paper background with no ruled lines, grid, beige
-tint, cream tone, parchment texture, or grey cast.
-
-Keep every drawing flat and hand-drawn.
-
-Do not add paper-cut layers, rendered shadows, foreshortening, gradients,
-glossy lighting, logos, branding, watermarks, unrelated decoration, or a dull,
-faded, pastel, corporate, sterile, or generic clip-art appearance.
-
-Use clear, legible text in the requested visible-text language and reproduce
-all supplied titles, labels, vocabulary, dates, measurements, equations, and
-annotations accurately.
-
-Use distinct all-caps handwritten printing for major headers and minimal
+Use distinct ALL-CAPS handwritten printing for major headers and compact
 handwritten lettering elsewhere.
 
-Do not add explanatory notes beneath drawings unless the blueprint supplies
-them.
+Reproduce all supplied titles, labels, vocabulary, dates, measurements,
+equations, and annotations accurately.
 
-When information is genuinely tabular, use a small plain two-column table with
-thin hand-drawn rules and compact entries.
+Do not generate fake text, pseudo-writing, or invented labels.
 
-Use speech or thought bubbles only for a brief quotation or thought supplied
-by the blueprint.
+If space is limited, reduce decoration and doodles rather than reducing,
+rewriting, or inventing content.
 
-Do not include fake text, pseudo-writing, invented labels, or irrelevant words.
+VISUAL STYLE:
+Loose, hand-drawn classroom sketchnote; bright white paper;
+simple contextual line cartoons; open, irregular module structure;
+restrained colour; compact information; friendly and highly legible.
 
-Visual style: loose, hand-drawn classroom sketchnote; bright white paper;
-simple contextual line cartoons; open, irregular module structure; restrained
-colour; compact information; friendly and highly legible.
+Aspect Ratio: [3:4, 1:1, 9:16, 16:9]
+`,
 
-Aspect Ratio: [3:4, 1:1, 9:16, 16:9]`,
-  `Using the content blueprint in your immediately preceding response, create a structured, formal educational infographic in a pure tree-map or hierarchical layout with no illustrations. Treat the blueprint as the authoritative source. Preserve its selected central topic, central visual concept, 6–8 knowledge modules, module titles, compact facts, fragments, labels, vocabulary, marked key words, examples, relationships, sequences, and comparisons, including every span it marked with ==double equals==. Keep the wording compact: reproduce the supplied text, but never expand fragments into complete sentences, explanations, or paragraphs. Do not invent additional facts, categories, modules, examples, conclusions, or interpretations.
+  `
+Using the supplied CONTENT BLUEPRINT, create a handwritten educational
+study summary.
 
+The blueprint is the ONLY source of factual content. Preserve all essential
+information, including the topic, titles, facts, dates, numbers, measurements,
+technical terms, relationships, comparisons, sequences, and marked highlights.
 
-Choose a clean, geometric, text-focused visual treatment suited to formal educational material. Let structure and typography carry the explanation. Use rectangular boxes, straight connecting lines, hierarchical branching, compact labels, and precise annotations only when they genuinely suit the topic. Prefer a label, arrow, symbol, date, number, or short fragment over explanatory prose. Do not include any illustrations, icons, pictograms, doodles, cartoons, people, objects, or decorative drawings of any kind.
+Do not invent, add, remove, repeat, or introduce unsupported information.
 
+The final image must look like a handwritten university study page or
+well-organised handwritten summary, NOT like a dense infographic,
+concept map, dashboard, or collection of cards.
 
-Place a simple text label or a minimal geometric shape (such as a circle or square with text only) in the middle or at the top of the page, directly below or beside the title box, as the root of the hierarchy. Arrange the 6–8 knowledge modules around or below it in a clear top-down or radial tree structure. Keep the page orderly and aligned: modules sit on an implicit grid with consistent spacing, not scattered in open space.
+LAYOUT:
+Create one continuous, readable page with a clear top-to-bottom reading flow.
 
+Place the main title prominently at the top using neat handwritten lettering.
+Below it, organise the blueprint information into coherent handwritten
+paragraphs and short sections.
 
-The central title sits in a simple rectangular box with a clean black outline and solid black header bar or dark fill. Keep the box white inside (or dark header with white text) with the title in a clean, formal, printed sans-serif or serif typeface in all-caps across one to two lines. Do not use handwritten, casual, or decorative lettering. Do not add gradients, glows, hand-drawn wobble, or coloured side edges. Reserve this formal-box treatment for the title only.
+Transform compatible compact facts into concise handwritten summary text,
+without adding new information or changing their meaning.
 
+Use short sentences and compact paragraphs rather than isolated infographic
+fragments.
 
-Each knowledge module must include:
+Do not force every blueprint module to become a separate visual block.
+Group closely related information naturally when this improves readability,
+while preserving all essential facts.
 
+Use generous white space between sections, but keep the overall page feeling
+like a real handwritten set of study notes.
 
-    an unnumbered header in all-caps using a clean, formal printed font (sans-serif or serif, not handwritten)
-    a clean rectangular or square box with thin black borders
-    the most suitable compact text layout, mini-table, or structured list when useful
-    concise labels and precise annotations aligned within the box
-    the blueprint's marked spans highlighted within their original compact text
-    meaningful visual connections to the central topic via straight or gently curved lines
+TEXT:
+The text is the main element of the image.
 
+Use natural handwritten lettering throughout the page.
+Major section titles should be handwritten ALL-CAPS.
+Supporting content should use smaller, highly legible handwritten writing.
 
-Do not place the modules in free space or separate them using generous white space alone. Separate and define them using uniform rectangular or square frames with thin, precise black borders. These frames should be clean, geometric, and complete, forming a structured grid or tree. Never let a separator be irregular, wobbly, incomplete, or open. Do not draw loose cloud-like lines, wavy dividers, or rough L-shapes. The only fully enclosed shapes on the page are the module boxes, the title box, and a small plain table when the information is genuinely tabular.
+Preserve exact technical terms, names, dates, measurements, equations,
+and important terminology from the blueprint.
 
+Do not generate fake text, pseudo-writing, invented labels, or unrelated notes.
 
-Do not include any doodles, cartoons, people, objects, icons, pictograms, or hand-drawn illustrations of any kind. Keep all visuals purely geometric, symbolic, or typographic: arrows, lines, boxes, tables, equations, or labelled components. Avoid stock illustrations, realistic anatomy, detailed faces, complex textures, elaborate perspective, glossy surfaces, commercial pictograms, finished editorial-cartoon character design, or any decorative drawings.
+HIGHLIGHTS:
+The ==double equals== markers indicate text that must receive a handwritten
+highlighter stroke. Do not draw the == symbols.
 
+Highlight only the marked spans, keeping them embedded inside their original
+text.
 
-Create a readable knowledge hierarchy with purposeful straight or gently curved connecting lines, leader lines, arrows, and visual pathways. Use solid or dashed lines to link the centre to the modules and show sequences or relationships from the blueprint. Every connector must communicate meaning; avoid decorative lines, numerical module markers, and unnecessary cross-connections.
+Use one continuous translucent marker stroke with a slightly irregular
+handwritten appearance.
 
+Never highlight unmarked text and never extract highlighted terms into
+separate key-term boxes or labels.
 
-Keep the colour restrained and professional. Black or dark charcoal ink carries all outlines, lettering, and connectors, while most of the page remains black on white. Use a single accent colour (such as blue, teal, navy, or a muted corporate colour) for occasional flat fills, header bars, or key highlights. Use muted red and yellow only where the content calls for a warning, top level, or contrast. Never colour every element or fill large areas of the page.
+ILLUSTRATIONS:
+Include at most TWO explanatory drawings on the entire page.
 
+Only add a drawing when it genuinely helps explain an important concept from
+the blueprint.
 
-Reproduce each supplied compact bullet, label, date, number, or fragment exactly, then highlight only the spans wrapped in ==double equals==. A span may be one word or a short two-to-three-word phrase and must receive one continuous marker stroke. Do not draw the double-equals marks. Keep every highlighted span embedded in its original compact text; never expand it into prose, extract or repeat it as a standalone element, or highlight unmarked text. Use a slightly off-register translucent accent-colour stroke or fill behind the letters, not a box, pill, tag, or digital selection bar.
+Choose the drawings from the blueprint's central visual or most important
+visual representations.
 
+Drawings must be simple educational hand sketches:
+thin dark outlines, minimal detail, flat restrained colour, and immediately
+recognisable shapes.
 
-Use a pristine, bright white paper background with no ruled lines, grid, beige tint, cream tone, parchment texture, or grey cast. Keep every element flat and precise. Do not add paper-cut layers, rendered shadows, foreshortening, gradients, glossy lighting, logos, branding, watermarks, unrelated decoration, or a dull, faded, pastel, corporate, sterile, or generic clip-art appearance.
+Do not illustrate every module.
 
+Do not add decorative doodles simply to fill empty space.
 
-Use clear, legible English and reproduce all supplied titles, labels, vocabulary, dates, measurements, equations, and annotations accurately. Use a clean, formal printed sans-serif or serif typeface for all text, with distinct all-caps for major headers and standard case for supporting text. Do not use handwritten, casual, script, or decorative fonts. Do not add explanatory notes beneath elements unless the blueprint supplies them. When information is genuinely tabular, use a small plain two-column table with thin precise rules and compact entries. Use speech or thought bubbles only for a brief quotation or thought supplied by the blueprint. Do not include fake text, pseudo-writing, invented labels, or irrelevant words.
+Avoid realistic rendering, glossy effects, complex textures, detailed
+characters, stock illustrations, icons, pictograms, or cinematic scenes.
 
+The drawings should support the handwritten summary rather than dominate it.
 
-Visual style: pure formal hierarchical tree-map; bright white paper; geometric boxes and lines only; no illustrations or icons; structured layout; formal printed typography; restrained colour; compact information; professional and highly legible.
+STRUCTURE:
+Do not use cards, dashboards, rigid infographic panels, UI containers,
+rounded boxes, or a rigid grid.
 
+Sections may be separated by:
+- white space;
+- short handwritten underlines;
+- simple arrows;
+- small brackets;
+- very light hand-drawn separators.
 
-Aspect Ratio: [3:4, 1:1, 9:16, 16:9]`,
+Use only a simple hand-drawn title treatment if a title box is useful.
+Do not create complete boxes around every section.
 
-  `Using the content blueprint in your immediately preceding response, create a calm, readable educational summary page with a small number of simple explanatory drawings. Treat the blueprint as the authoritative source. Preserve its selected central topic, central visual concept, 6–8 knowledge modules, module titles, compact facts, fragments, labels, vocabulary, marked key words, examples, relationships, sequences, and comparisons, including every span it marked with ==double equals==.
+VISUAL CONNECTIONS:
+Use only a few meaningful arrows or leader lines when they clarify a
+relationship, sequence, cause, or process from the blueprint.
 
-The goal is not to create a dense concept map, dashboard, tree diagram, or collection of decorative panels. Create a well-organised illustrated summary page in which the main concepts are written as concise, connected summary text, supported by only a few meaningful drawings. The page should feel like a clear study sheet or a page from a modern educational textbook.
+Do not turn the page into a network diagram.
 
+COLOUR:
+Keep the page predominantly black and white.
 
-Use only information directly supplied by the blueprint. Do not invent additional facts, categories, modules, examples, conclusions, interpretations, or decorative content. Do not repeat information already presented elsewhere. Do not add sections called “Why It Matters,” “Key Points,” “Summary,” “Recap,” “Conclusion,” “Takeaways,” or “Glossary” unless the blueprint explicitly contains that exact information.
+Use black or dark charcoal for handwritten text and drawings.
 
+Use restrained teal or orange for occasional highlights and emphasis.
+Muted red or yellow may be used only when semantically necessary.
 
-Create a clear reading order from top to bottom. Place the central topic and title near the top of the page. Under the title, organise the information into 4–6 broad text sections derived from the blueprint’s modules. Combine closely related modules when this improves readability, but preserve every essential fact from the blueprint. Present each section as a short paragraph or a compact group of connected sentences, not as isolated labels scattered across the page.
+Do not colour large areas or every element.
 
+BACKGROUND:
+Use pristine bright white paper.
 
-Each section should include:
+No ruled paper, graph paper, beige, cream, parchment, grey cast,
+paper texture, gradients, glossy lighting, heavy shadows, or decorative
+background elements.
 
+FINAL APPEARANCE:
+The result should resemble an excellent handwritten university study summary:
+clear, personal, organised, information-dense but readable, with natural
+handwritten text and no more than two meaningful explanatory drawings.
 
-    a short, clear heading in all-caps
-    one concise summary paragraph or a small group of compact sentences
-    the blueprint’s exact facts, dates, names, numbers, and relationships
-    only the most important spans highlighted within their original text
-    one small visual cue only when it genuinely clarifies the content
+It should feel like something a student could genuinely study from.
 
+Aspect Ratio: [3:4, 1:1, 9:16, 16:9]
+`,
 
-Write the main concepts as a readable summary rather than as disconnected bullet fragments. Use short sentences, compact paragraphs, and natural connections between ideas. Do not expand the blueprint with new explanations. Do not turn every fact into a separate visual element. Avoid excessive arrows, leader lines, labels, callouts, annotations, and isolated keywords.
+  `
+Using the supplied CONTENT BLUEPRINT, create a simple formal conceptual map
+in a classic hierarchical tree structure.
 
+The blueprint is the ONLY source of factual content.
 
-Include only 2–4 principal drawings on the entire page. These drawings must be simple, flat, recognisable line illustrations directly related to the topic. Choose them from the blueprint’s central visual representation, setting, person, object, process, timeline, or most important example. Do not illustrate every module.
+Preserve the topic, central concept, module titles, concept labels, facts,
+relationships, sequences, comparisons, dates, numbers, measurements,
+technical terms, and marked highlights.
 
+Do not invent, add, remove, repeat, paraphrase, or expand information.
 
-Drawings must look like simple educational textbook sketches or restrained ink illustrations, not plastic 3D renders, realistic digital paintings, glossy icons, cinematic scenes, or stock images. Use thin dark outlines, flat colour areas, very limited shading, and minimal identifying details. Avoid glossy surfaces, realistic skin, complex textures, dramatic lighting, artificial depth, heavy shadows, plastic materials, photorealism, elaborate perspective, and highly rendered characters.
+The final image must be a traditional educational concept map:
+formal, simple, hierarchical, geometric, and easy to read.
 
+Do not create a sketchnote, illustrated infographic, handwritten study page,
+dashboard, or decorative poster.
 
-If the topic concerns a person, use at most one simple portrait or profile drawing and, when useful, one contextual object or location. If the topic concerns a place, use one simplified location or landscape drawing. If the topic concerns a process, use one restrained process diagram with a few stages. If the topic concerns an object or system, use one simple labelled schematic. Adapt the drawings to the topic rather than forcing a fixed number or type of illustrations.
+HIERARCHY:
+Place the main topic at the top or centre as the ROOT NODE.
 
+Below it, create clear hierarchical branches leading to the main knowledge
+modules.
 
-The main drawing should appear near the title or beside the first major section. Smaller drawings may appear in the margins or beside the relevant paragraph. Drawings must support the text and never dominate the page. Leave sufficient white space around every drawing and text block.
+Each major module should become a clearly identifiable node or branch.
 
+Organise information from general concepts to progressively more specific
+facts.
 
-Do not use a rigid grid of cards, dashboard panels, rounded UI boxes, complete rectangular frames, sticker shapes, or dense infographic modules. Sections may be separated by white space, a thin horizontal line, a short underline, or a very light irregular separator. Do not enclose every section in a box. Use one simple title area and an open editorial layout.
+Use a simple top-down tree whenever possible.
 
+If the topic naturally requires a radial structure, use a clean radial
+hierarchy instead.
 
-The title should be prominent but restrained. Use a clean, legible educational typeface or neat printed lettering, preferably a refined serif or humanist sans-serif. Use all-caps or title case according to the supplied title. Supporting text must use a highly readable book-like font with consistent size, line spacing, and alignment. Do not use exaggerated brush lettering, graffiti lettering, playful script, distorted handwritten text, or decorative display fonts.
+Do not number modules.
 
+LAYOUT:
+Use a clean, balanced composition with consistent spacing and alignment.
 
-Create a clear typographic hierarchy:
+Nodes should be distributed according to their hierarchical relationship,
+not randomly across the page.
 
+Keep the structure immediately understandable:
+ROOT → MAIN CONCEPTS → SUBCONCEPTS → DETAILS.
 
-    title: largest and most prominent
-    section headings: medium-sized, all-caps or small caps
-    summary text: regular readable size
-    dates, names, and key terms: highlighted only when marked by the blueprint
+Use enough white space to keep branches readable without creating unnecessary
+empty areas.
 
+Avoid overlapping text and connectors.
 
-Use a bright white paper background. Do not use ruled paper, graph paper, beige paper, parchment, cream tones, grey casts, or paper textures. Keep the page clean and light, with generous margins and comfortable line spacing.
+NODES:
+Represent concepts using simple geometric shapes such as rectangles,
+rounded rectangles, circles, or simple outlined boxes.
 
+Keep node shapes consistent throughout the map.
 
-Use a restrained colour palette. Use black or dark charcoal for the text and outlines. Use one main accent colour, such as muted teal, olive green, or dark blue, for headings and occasional highlights. Use a second accent colour only for the spans marked with ==double equals== or for a genuinely meaningful contrast. Do not colour large backgrounds, every illustration, or every section.
+The root node may be slightly larger than the other nodes.
 
+Use smaller nodes for secondary concepts and details.
 
-Reproduce each supplied compact bullet, label, date, number, or fragment accurately, but transform compatible fragments into concise summary sentences without adding information or changing their meaning. Preserve the exact wording of important names, dates, measurements, equations, technical terms, and quotations. Highlight only the spans wrapped in ==double equals==. Do not draw the double-equals marks. Each highlighted span must remain embedded in the original sentence or text block and receive one continuous translucent marker stroke behind the letters. Never extract highlighted text as a separate label.
+Do not create decorative illustrations inside the nodes.
 
+Keep the content inside each node extremely compact.
 
-Use clear, accurate English and reproduce all supplied titles, names, dates, vocabulary, measurements, equations, and annotations correctly. Do not add fake text, pseudo-writing, invented labels, irrelevant words, decorative quotations, or explanatory notes not present in the blueprint. Keep all text fully legible and avoid overlapping drawings, lines, highlights, or other text.
+CONNECTORS:
+Connect nodes using clean straight lines or gently curved arrows.
 
+Every connector must communicate an actual relationship from the blueprint.
 
-Before returning the image, verify that:
+Use arrows when direction, sequence, cause, process, or dependency matters.
 
+Use plain lines when only hierarchical association is needed.
 
-    all essential blueprint information is present
-    no unsupported information has been added
-    the main concepts read naturally as a concise summary
-    only 2–4 principal drawings are present
-    drawings are simple, flat, and non-plastic
-    the page is light, calm, and easy to read
-    highlighted spans remain embedded in their original text
-    no dense card layout, dashboard interface, tree structure, or decorative clutter has been introduced
+Do not add decorative connections or unnecessary cross-links.
 
+Do not create a dense web of intersecting lines.
 
-Visual style: calm editorial educational summary page; bright white paper; readable book-like typography; concise connected text; 2–4 simple flat textbook drawings; generous white space; restrained colour; light visual hierarchy; clear and highly legible.
+TEXT:
+Use clear formal printed typography.
 
+Use ALL-CAPS for major module titles and standard case for supporting
+information.
 
-Aspect Ratio: [3:4, 1:1, 9:16, 16:9]`,
+Keep labels and facts short and faithful to the blueprint.
+
+Never turn compact facts into long explanations or paragraphs.
+
+Do not generate fake text, pseudo-writing, invented labels, or unsupported
+annotations.
+
+HIGHLIGHTS:
+The ==double equals== markers are instructions, not visible characters.
+Do not draw them.
+
+Highlight only the exact marked spans inside their original text.
+
+Use a simple translucent accent-colour highlight behind the marked words.
+
+Never highlight unmarked text and never extract highlighted terms into
+separate nodes.
+
+COLOUR:
+Keep the visual language restrained and formal.
+
+Use black or dark charcoal for text, outlines, and connectors.
+
+Use one restrained accent colour such as teal or blue for selected nodes,
+branches, or highlights.
+
+Use muted red or yellow only when required to express warning, contrast,
+or another meaningful semantic distinction.
+
+Do not colour every node.
+
+BACKGROUND:
+Use a pristine bright white background.
+
+No paper texture, ruled lines, graph paper, beige, cream, parchment,
+grey cast, gradients, shadows, glossy effects, stickers, logos,
+watermarks, or decorative backgrounds.
+
+VISUALS:
+Do not use illustrations, doodles, cartoons, people, objects, icons,
+pictograms, or decorative drawings.
+
+All visual communication must come from:
+- nodes;
+- text;
+- arrows;
+- connecting lines;
+- brackets;
+- simple tables;
+- equations;
+- relationships.
+
+If the blueprint describes a process, represent it using connected nodes
+and directional arrows rather than an illustration.
+
+If the blueprint describes a classification, represent it as hierarchical
+branches.
+
+If the blueprint describes a comparison, represent it using parallel branches
+or a small structured comparison table.
+
+FINAL APPEARANCE:
+The result should look like a classic university-level conceptual map:
+simple, formal, hierarchical, geometric, uncluttered, and highly legible.
+
+Visual style: pure formal concept map; classic tree hierarchy; bright white
+background; geometric nodes; clean connecting lines; formal typography;
+restrained colour; compact information; professional and highly legible.
+
+Aspect Ratio: [3:4, 1:1, 9:16, 16:9]
+`,
 ];

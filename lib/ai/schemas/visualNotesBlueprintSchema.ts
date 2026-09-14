@@ -77,7 +77,7 @@ const blueprintModuleSchema = z.object({
   relationToCentralTopic: z
     .string()
     .min(1)
-    .max(90)
+    .max(180)
     .describe(
       "Short statement explaining the meaningful visual connection to the central topic.",
     ),

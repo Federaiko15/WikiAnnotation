@@ -35,7 +35,7 @@ export async function generateImageFromBlueprint({
     "1:1": "1024x1024",
     "16:9": "1536x1024",
     "9:16": "1024x1536",
-    "3:4": "1024x1365",
+    "3:4": "1024x1360",
   };
 
   const imageSize = imageSizes[aspectRatio];

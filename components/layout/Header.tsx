@@ -10,7 +10,7 @@ export default function Header() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  // Nasconde l'header nella pagina di autenticazione
+  // Leggo il pathname così da poter nascondere l'header nella pagina di auth
   if (pathname?.startsWith("/auth")) {
     return null;
   }

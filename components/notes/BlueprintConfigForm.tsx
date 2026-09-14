@@ -6,7 +6,7 @@ import type { OutputLanguage } from "@/lib/api/notesClient";
 import type { ImageAspectRatio } from "@/lib/ai/services/generateImage";
 import secondaGuerraMondialeImg from "@/assets/seconda-guerra-mondiale.png";
 import fotosintesi from "@/assets/appunti-visivi-fotosintesi-clorofilliana(1).png";
-import aristotele from "@/assets/appunti-visivi-aristotele.png";
+import rivoluzioneFrancese from "@/assets/appunti-visivi-rivoluzione-francese.png";
 import Image from "next/image";
 import { ImageStyle } from "@/lib/ai/agents/createImageAgents";
 
@@ -197,7 +197,7 @@ export default function BlueprintConfigForm({
                 className="flex flex-col items-center gap-2 cursor-pointer group"
               >
                 <Image
-                  src={aristotele}
+                  src={rivoluzioneFrancese}
                   alt="Esempio di annotazione in stile sketchnote"
                   className="rounded border-2 border-zinc-900 shadow-[3px_3px_0px_#18181b] group-hover:shadow-[4px_4px_0px_#ea580c] transition-all w-full h-auto"
                 />
