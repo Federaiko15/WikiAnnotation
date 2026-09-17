@@ -50,7 +50,7 @@ export default function Header() {
               ) : (
                 <CgProfile className="text-base" />
               )}
-              <span>Profile</span>
+              <span>Profilo</span>
             </Link>
           )}
         </div>

@@ -12,7 +12,7 @@ import fotosintesi1 from "@/assets/appunti-visivi-fotosintesi-clorofilliana.png"
 import ilReLeone from "@/assets/appunti-visivi-il-re-leone.png";
 import gwt from "@/assets/appunti-visivi-gwt.png";
 import pirandello from "@/assets/appunti-visivi-luigi-pirandello.png";
-import fotosintesi2 from "@/assets/appunti-visivi-fotosintesi-clorofilliana(1).png";
+import logaritmi from "@/assets/appunti-visivi-logaritmo.png";
 import secondaGuerraMondiale from "@/assets/seconda-guerra-mondiale.png";
 import starwars from "@/assets/appunti-visivi-star-wars-episodio-iii-la-vendetta-dei-sith.png";
 import laGuerraDiTroia from "@/assets/appunti-visivi-guerra-di-troia.png";
@@ -68,9 +68,9 @@ const slides: Slide[] = [
     description: "Il relativismo, le maschere e la poetica dell'umorismo.",
   },
   {
-    image: fotosintesi2,
-    title: "Fotosintesi Clorofiliana (Schema ad Albero)",
-    description: "Descrizione del processo di fotosintesi clorofiliana",
+    image: logaritmi,
+    title: "Logaritmi",
+    description: "Regole base e concetti relativi ai logaritmi",
   },
   {
     image: secondaGuerraMondiale,
@@ -191,7 +191,9 @@ export default function Carousel({
           <div>
             <div
               className={`sketchnote-title-box-sm inline-block ${
-                compact ? "px-2.5 py-0.5 text-xs sm:text-sm" : "px-3 py-1 text-sm sm:text-base"
+                compact
+                  ? "px-2.5 py-0.5 text-xs sm:text-sm"
+                  : "px-3 py-1 text-sm sm:text-base"
               }`}
             >
               {current.title}

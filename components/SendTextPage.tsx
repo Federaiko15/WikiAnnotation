@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveUserText } from "@/lib/api/notesClient";
 
-const MAX_CHARACTERS = 15000;
+const MAX_CHARACTERS = 20000;
 
 const SAMPLE_TEXT = `La Rivoluzione Industriale è stato un processo di evoluzione economica e di industrializzazione di società che da agricole ed artigianali divennero prevalentemente industriali, moderno-capitalistiche.
 

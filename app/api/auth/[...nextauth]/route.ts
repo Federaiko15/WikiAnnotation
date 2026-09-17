@@ -39,7 +39,7 @@ export const authOptions: AuthOptions = {
 
           return {
             id: user._id.toString(),
-            username: user.username,
+            name: user.username,
             email: user.email,
           };
         } catch (error) {
@@ -60,12 +60,14 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.name = user.name;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token.id) {
         (session.user as { id?: string }).id = token.id as string;
+        session.user.name = token.name;
       }
       return session;
     },

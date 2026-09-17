@@ -1,12 +1,12 @@
 import { signIn } from "next-auth/react";
 
-type RegisterResult = { success: true } | { success: false; error: string };
+type AuthResult = { success: true } | { success: false; error: string };
 
 export async function registerUser(
   username: string,
   email: string,
   password: string,
-): Promise<RegisterResult> {
+): Promise<AuthResult> {
   try {
     const res = await fetch("/api/auth/register", {
       method: "POST",
@@ -43,7 +43,7 @@ export async function registerUser(
 export async function loginUser(
   email: string,
   password: string,
-): Promise<RegisterResult> {
+): Promise<AuthResult> {
   try {
     const result = await signIn("credentials", {
       email,
@@ -65,6 +65,40 @@ export async function loginUser(
     return {
       success: false,
       error: "Errore nella funzione di login in loginUser...",
+    };
+  }
+}
+
+export async function deleteUser(
+  email: string,
+  password: string,
+): Promise<AuthResult> {
+  try {
+    const result = await fetch("/api/auth/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    if (result.ok) {
+      return {
+        success: true,
+      };
+    }
+
+    return {
+      success: false,
+      error: "Credenziali invalide",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: "Errore nella funzione di eliminazione dell'utente",
     };
   }
 }

@@ -4,9 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { CgProfile } from "react-icons/cg";
+import { useState } from "react";
 
 export default function HeroProfile() {
   const { data: session } = useSession();
+  const [password, setPassword] = useState<string>("");
+  const [wantDelete, setWantDelete] = useState<boolean>(false);
+
+  const handleDeleteUserAccount = () => setWantDelete(true);
 
   return (
     <main className="min-h-[calc(100vh-65px)] flex items-center justify-center p-4">
@@ -48,6 +53,12 @@ export default function HeroProfile() {
           >
             Esci dall&apos;app
           </button>
+          <button
+            onClick={handleDeleteUserAccount}
+            className="w-full text-xs text-red-600 hover:underline cursor-pointer"
+          >
+            Elimina l&apos;account
+          </button>
 
           <Link
             href="/"
@@ -57,7 +68,25 @@ export default function HeroProfile() {
           </Link>
         </div>
       </div>
+
+      <div>
+        {wantDelete && (
+          <div>
+            <label htmlFor="">
+              Sei sicuro di volere eliminare l'account? Inserisci la passwod...
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Inserisci la password..."
+            />
+            <button onClick={() => setWantDelete(false)}>
+              Ci ho ripensato
+            </button>
+          </div>
+        )}
+      </div>
     </main>
   );
 }
-

@@ -55,7 +55,7 @@ const blueprintModuleSchema = z.object({
   title: z
     .string()
     .min(1)
-    .max(32)
+    .max(64)
     .describe("Short all-caps module header, without number."),
 
   conceptLabel: z
