@@ -33,6 +33,7 @@ export async function registerUser(
       error: data.message ?? "Registrazione non riuscita...",
     };
   } catch (error) {
+    console.error("registerUser error:", error);
     return {
       success: false,
       error: "Registrazione non avvenuta...",
@@ -85,6 +86,8 @@ export async function deleteUser(
       }),
     });
 
+    const data = await result.json().catch(() => null);
+
     if (result.ok) {
       return {
         success: true,
@@ -93,12 +96,13 @@ export async function deleteUser(
 
     return {
       success: false,
-      error: "Credenziali invalide",
+      error: data?.message || "Credenziali non valide o errore durante l'eliminazione.",
     };
   } catch (error) {
+    console.error("deleteUser error:", error);
     return {
       success: false,
-      error: "Errore nella funzione di eliminazione dell'utente",
+      error: "Errore di connessione durante l'eliminazione dell'utente.",
     };
   }
 }

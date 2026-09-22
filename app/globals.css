@@ -173,6 +173,39 @@ body {
     cursor: not-allowed;
   }
 
+  .sketch-btn-red {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: #ef4444;
+    color: #ffffff;
+    border: 2px solid #18181b;
+    box-shadow: 3px 3px 0px #18181b;
+    font-family: var(--font-sketch);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+  }
+  .sketch-btn-red:hover:not(:disabled) {
+    background-color: #dc2626;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #18181b;
+  }
+  .sketch-btn-red:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #18181b;
+  }
+  .sketch-btn-red:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   /* Sketchnote Inputs & Selects */
   .sketch-input,
   .sketch-select {
