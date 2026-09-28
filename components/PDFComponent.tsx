@@ -2,11 +2,13 @@
 
 import { useState, useRef } from "react";
 import { FaFilePdf, FaUpload, FaTimes } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export function PDFComponent() {
   const [pdf, setPdf] = useState<File | null>(null);
   const [isUploadingPdf, setIsUploadingPdf] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -51,11 +53,14 @@ export function PDFComponent() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ pdfBase64: base64 }),
+        body: JSON.stringify({
+          pdfBase64: base64,
+          fileName: pdf.name,
+        }),
       });
 
       const data = await res.json();
-      if (!res.ok) {
+      if (!res.ok || !data.randomId) {
         console.error(
           "Errore nella risposta alla API che elabora il file PDF",
           data,
@@ -63,6 +68,9 @@ export function PDFComponent() {
         return;
       } else {
         console.log(data.data);
+        router.push(
+          `/pdf_file/${data.randomId}?title=${encodeURIComponent(data.title)}`,
+        );
       }
     } catch (error) {
       console.error("Errore durante l'invio del file PDF:", error);
@@ -155,6 +163,7 @@ export function PDFComponent() {
             ? "✓ File selezionato correttamente"
             : "Nessun file selezionato al momento"}
         </p>
+
         <button
           type="submit"
           disabled={!pdf || isUploadingPdf}

@@ -35,4 +35,6 @@ export const pdfBase64Schema = z
 
 export const uploadRequestSchema = z.object({
   pdfBase64: pdfBase64Schema,
+  fileName: z.string().optional(),
 });
+
