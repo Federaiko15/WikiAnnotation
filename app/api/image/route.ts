@@ -6,7 +6,7 @@ import { visualNotesBlueprintSchema } from "@/lib/ai/schemas/visualNotesBlueprin
 const requestSchema = z.object({
   blueprint: visualNotesBlueprintSchema,
   outputLanguage: z.enum(["it", "en"]).default("it"),
-  aspectRatio: z.enum(["3:4", "1:1", "9:16", "16:9"]).default("3:4").optional(),
+  aspectRatio: z.enum(["3:4", "1:1", "9:16", "16:9"]).default("3:4"),
   annotationStyle: z
     .union([z.literal(0), z.literal(1), z.literal(2)])
     .default(0),
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       requestSchema.parse(body);
 
     console.log(
-      `[API /api/image] Inizio generazione immagine con l'AI per "${blueprint.topic}" (${aspectRatio ?? "3:4"}, ${outputLanguage})...`,
+      `[API /api/image] Inizio generazione immagine con l'AI per "${blueprint.topic}" (${aspectRatio}, ${outputLanguage})...`,
     );
 
     const result = await generateImageFromBlueprint({

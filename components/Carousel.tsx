@@ -17,6 +17,8 @@ import secondaGuerraMondiale from "@/assets/seconda-guerra-mondiale.png";
 import starwars from "@/assets/appunti-visivi-star-wars-episodio-iii-la-vendetta-dei-sith.png";
 import laGuerraDiTroia from "@/assets/appunti-visivi-guerra-di-troia.png";
 import dna from "@/assets/appunti-visivi-dna.png";
+import vanGogh from "@/assets/appunti-visivi-vincent-van-gogh.png";
+import pinocchio from "@/assets/appunti-visivi-pinocchio-film-1940.png";
 
 type Slide = {
   image: StaticImageData;
@@ -93,6 +95,17 @@ const slides: Slide[] = [
     title: "DNA",
     description:
       "Descrizione della struttura, delle funzioni e delle dinamiche del DNA",
+  },
+  {
+    image: vanGogh,
+    title: "Van Gogh",
+    description: "Vita e opere del pittore Van Gogh.",
+  },
+  {
+    image: pinocchio,
+    title: "Pinocchio",
+    description:
+      "Trama, personaggi principali e storia del classico Disney Pinocchio.",
   },
 ];
 type CarouselProps = {
