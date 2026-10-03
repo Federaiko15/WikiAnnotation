@@ -1,35 +1,68 @@
 import { NextResponse, NextRequest } from "next/server";
 import { z } from "zod";
-import { generateImageFromBlueprint } from "@/lib/ai/services/generateImage";
-import { visualNotesBlueprintSchema } from "@/lib/ai/schemas/visualNotesBlueprintSchema";
+import { generateImagesFromBlueprints } from "@/lib/ai/services/generateImage";
+import {
+  singleVisualNotesBlueprintSchema,
+  visualNotesBlueprintCollectionSchema,
+} from "@/lib/ai/schemas/visualNotesBlueprintSchema";
 
-const requestSchema = z.object({
-  blueprint: visualNotesBlueprintSchema,
-  outputLanguage: z.enum(["it", "en"]).default("it"),
-  aspectRatio: z.enum(["3:4", "1:1", "9:16", "16:9"]).default("3:4"),
-  annotationStyle: z
-    .union([z.literal(0), z.literal(1), z.literal(2)])
-    .default(0),
-});
+export const maxDuration = 120;
+
+const requestSchema = z
+  .object({
+    blueprints: visualNotesBlueprintCollectionSchema.optional(),
+    blueprint: singleVisualNotesBlueprintSchema.optional(),
+    outputLanguage: z.enum(["it", "en"]).default("it"),
+    aspectRatio: z.enum(["3:4", "1:1", "9:16", "16:9"]).default("3:4"),
+    annotationStyle: z
+      .union([z.literal(0), z.literal(1), z.literal(2)])
+      .default(0),
+  })
+  .refine((data) => data.blueprints !== undefined || data.blueprint !== undefined, {
+    message: "Fornire 'blueprints' o 'blueprint'.",
+  });
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { blueprint, outputLanguage, aspectRatio, annotationStyle } =
-      requestSchema.parse(body);
+    const {
+      blueprints,
+      blueprint,
+      outputLanguage,
+      aspectRatio,
+      annotationStyle,
+    } = requestSchema.parse(body);
 
+    const collection = blueprints ?? {
+      topic: blueprint?.topic ?? "",
+      blueprints: blueprint ? [blueprint] : [],
+    };
+
+    const count = collection.blueprints.length;
     console.log(
-      `[API /api/image] Inizio generazione immagine con l'AI per "${blueprint.topic}" (${aspectRatio}, ${outputLanguage})...`,
+      `[API /api/image] Inizio generazione di ${count} immagine/i per "${collection.topic || collection.blueprints[0]?.topic || ""}" (${aspectRatio}, ${outputLanguage})...`,
     );
 
-    const result = await generateImageFromBlueprint({
-      blueprint,
+    const result = await generateImagesFromBlueprints({
+      blueprints: collection,
       outputLanguage,
       aspectRatio,
       annotationStyle,
     });
 
-    return NextResponse.json(result);
+    console.log(
+      `[API /api/image] Generate con successo ${result.images.length} immagine/i!`,
+    );
+
+    const firstImage = result.images[0];
+
+    return NextResponse.json({
+      images: result.images,
+      // Retrocompatibilità per consumer legacy
+      image: firstImage?.image,
+      imageSize: firstImage?.imageSize,
+      finalPrompt: firstImage?.finalPrompt,
+    });
   } catch (error) {
     console.error(
       `[API /api/image] Errore durante la generazione dell'immagine: ${error}`,

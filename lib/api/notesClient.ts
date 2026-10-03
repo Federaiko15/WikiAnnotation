@@ -1,9 +1,25 @@
-import type { VisualNotesBlueprint } from "@/lib/ai/schemas/visualNotesBlueprintSchema";
+import type {
+  VisualNotesBlueprint,
+  VisualNotesBlueprintCollection,
+} from "@/lib/ai/schemas/visualNotesBlueprintSchema";
 import type { LearningLevel } from "@/lib/ai/agents/createBlueprintAgents";
 import type { ImageAspectRatio } from "@/lib/ai/services/generateImage";
 import type { ImageStyle } from "@/lib/ai/agents/createImageAgents";
 
+export type { VisualNotesBlueprint, VisualNotesBlueprintCollection };
+
 export type OutputLanguage = "it" | "en";
+
+export type GeneratedImageItem = {
+  topic: string;
+  blueprintTitle: string;
+  image: {
+    base64: string;
+    mediaType: string;
+  };
+  imageSize: string;
+  finalPrompt: string;
+};
 
 export type BlueprintApiParams = {
   pageKey: string;
@@ -18,24 +34,26 @@ export type BlueprintApiResponse = {
     title: string;
     url: string;
   };
-  blueprint: VisualNotesBlueprint;
+  blueprints: VisualNotesBlueprintCollection;
 };
 
 export type ImageApiParams = {
-  blueprint: VisualNotesBlueprint;
+  blueprints: VisualNotesBlueprintCollection;
   outputLanguage: OutputLanguage;
   aspectRatio?: ImageAspectRatio;
   annotationStyle: ImageStyle;
 };
 
 export type ImageApiResponse = {
-  image: {
+  images: GeneratedImageItem[];
+  image?: {
     base64: string;
     mediaType: string;
   };
-  imageSize: string;
-  finalPrompt: string;
+  imageSize?: string;
+  finalPrompt?: string;
 };
+
 
 export async function fetchBlueprint(
   params: BlueprintApiParams,
@@ -75,7 +93,7 @@ export async function fetchGeneratedImage(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      blueprint: params.blueprint,
+      blueprints: params.blueprints,
       outputLanguage: params.outputLanguage,
       aspectRatio: params.aspectRatio ?? "3:4",
       annotationStyle: params.annotationStyle,

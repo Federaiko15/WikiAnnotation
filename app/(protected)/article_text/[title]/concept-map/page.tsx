@@ -24,12 +24,8 @@ export default async function ConceptMapPage({
   searchParams: Promise<{ source?: string; id?: string }>;
 }) {
   const { title } = await params;
-  const { source } = await searchParams;
-  var redisId;
-  if (source == "custom") {
-    let { id } = await searchParams;
-    redisId = id;
-  }
+  const { source, id } = await searchParams;
+  const redisId = source === "custom" ? id : undefined;
   const pageKey = decodeURIComponent(title);
   const displayTitle = pageKey.replace(/_/g, " ");
 

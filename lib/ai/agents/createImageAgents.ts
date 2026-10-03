@@ -61,6 +61,9 @@ export function createImageAgent(
 
     prompt: [
       `TOPIC: "${blueprint.topic}"`,
+      blueprint.blueprintTitle
+        ? `INFOGRAPHIC TITLE / FOCUS: "${blueprint.blueprintTitle}"`
+        : "",
       `LEARNING LEVEL: "${blueprint.learningLevel}"`,
       `SUBJECT TYPE: "${blueprint.subjectType}"`,
       "",
@@ -73,6 +76,8 @@ export function createImageAgent(
       `SOURCE NOTICE: "${blueprint.sourceNotice}"`,
       "",
       "Create only the final handwritten educational infographic.",
-    ].join("\n"),
+    ]
+      .filter((line) => line !== "")
+      .join("\n"),
   };
 }

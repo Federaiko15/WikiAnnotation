@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import type { VisualNotesBlueprint } from "@/lib/ai/schemas/visualNotesBlueprintSchema";
+import type { VisualNotesBlueprintCollection } from "@/lib/ai/schemas/visualNotesBlueprintSchema";
 import type { LearningLevel } from "@/lib/ai/agents/createBlueprintAgents";
 import type { ImageAspectRatio } from "@/lib/ai/services/generateImage";
 import type { ImageStyle } from "@/lib/ai/agents/createImageAgents";
@@ -37,7 +37,8 @@ export default function VisualNotesStudio({
   const [annotationStyle, setAnnotationStyle] = useState<ImageStyle>(0);
 
   // Workflow results
-  const [blueprint, setBlueprint] = useState<VisualNotesBlueprint | null>(null);
+  const [blueprints, setBlueprints] =
+    useState<VisualNotesBlueprintCollection | null>(null);
   const [source, setSource] = useState<{ title: string; url: string } | null>(
     null,
   );
@@ -73,17 +74,18 @@ export default function VisualNotesStudio({
       });
 
       console.log(
-        "[VisualNotesStudio] Blueprint generato con successo:",
-        data.blueprint.topic,
+        "[VisualNotesStudio] Blueprints generati con successo:",
+        data.blueprints.topic,
+        `(${data.blueprints.blueprints.length} fogli)`,
       );
 
-      setBlueprint(data.blueprint);
+      setBlueprints(data.blueprints);
       setSource(data.source);
       setCurrentStep("blueprint");
 
       // If user enabled auto-generation, immediately trigger Fetch 2
       if (autoGenerateImage) {
-        await executeImageGeneration(data.blueprint);
+        await executeImageGeneration(data.blueprints);
       } else {
         setLoadingPhase(null);
       }
@@ -100,11 +102,11 @@ export default function VisualNotesStudio({
 
   // Fetch 2: /api/image
   async function executeImageGeneration(
-    targetBlueprint?: VisualNotesBlueprint,
+    targetBlueprints?: VisualNotesBlueprintCollection,
   ) {
-    const bp = targetBlueprint ?? blueprint;
+    const bps = targetBlueprints ?? blueprints;
 
-    if (!bp) {
+    if (!bps || !bps.blueprints.length) {
       setError("Nessun blueprint disponibile per generare l'immagine.");
       return;
     }
@@ -114,21 +116,22 @@ export default function VisualNotesStudio({
 
     console.log(
       "[VisualNotesStudio] Inizio chiamata /api/image per:",
-      bp.topic,
+      bps.topic,
+      `(${bps.blueprints.length} blueprint)`,
       aspectRatio,
     );
 
     try {
       const data = await fetchGeneratedImage({
-        blueprint: bp,
+        blueprints: bps,
         outputLanguage,
         aspectRatio,
         annotationStyle,
       });
 
       console.log(
-        "[VisualNotesStudio] Immagine generata con successo! Dimensione:",
-        data.imageSize,
+        "[VisualNotesStudio] Immagini generate con successo! Totale:",
+        data.images?.length ?? 1,
       );
 
       setImageResult(data);
@@ -146,7 +149,7 @@ export default function VisualNotesStudio({
   }
 
   function handleReset() {
-    setBlueprint(null);
+    setBlueprints(null);
     setImageResult(null);
     setError(null);
     setCurrentStep("config");
@@ -157,7 +160,7 @@ export default function VisualNotesStudio({
       {/* Stepper Navigation */}
       <NotesStepper
         currentStep={currentStep}
-        hasBlueprint={!!blueprint}
+        hasBlueprint={!!blueprints && blueprints.blueprints.length > 0}
         hasImage={!!imageResult}
         onStepClick={(step) => setCurrentStep(step)}
       />
@@ -168,7 +171,7 @@ export default function VisualNotesStudio({
         error={error}
         onClearError={() => setError(null)}
         onRetry={() => {
-          if (loadingPhase === "image" || (blueprint && !imageResult)) {
+          if (loadingPhase === "image" || (blueprints && !imageResult)) {
             executeImageGeneration();
           } else {
             handleGenerateBlueprint();
@@ -177,7 +180,7 @@ export default function VisualNotesStudio({
       />
 
       {/* Step 1: Configuration Form */}
-      {(currentStep === "config" || !blueprint) && (
+      {(currentStep === "config" || !blueprints) && (
         <BlueprintConfigForm
           learningLevel={learningLevel}
           setLearningLevel={setLearningLevel}
@@ -191,17 +194,18 @@ export default function VisualNotesStudio({
           onSubmit={handleGenerateBlueprint}
           loading={loadingPhase !== null}
           loadingPhase={loadingPhase}
-          hasBlueprint={!!blueprint}
+          hasBlueprint={!!blueprints && blueprints.blueprints.length > 0}
           onReset={handleReset}
         />
       )}
 
       {/* Step 2: Educational Blueprint Preview */}
-      {blueprint &&
+      {blueprints &&
+        blueprints.blueprints.length > 0 &&
         (currentStep === "blueprint" ||
           (!imageResult && currentStep !== "config")) && (
           <BlueprintViewer
-            blueprint={blueprint}
+            blueprints={blueprints}
             source={source ?? undefined}
             aspectRatio={aspectRatio}
             setAspectRatio={setAspectRatio}
@@ -215,7 +219,7 @@ export default function VisualNotesStudio({
       {imageResult && currentStep === "image" && (
         <GeneratedImageViewer
           result={imageResult}
-          topic={blueprint?.topic ?? articleTitle}
+          topic={blueprints?.topic ?? articleTitle}
           onRegenerate={() => executeImageGeneration()}
           isRegenerating={loadingPhase === "image"}
         />

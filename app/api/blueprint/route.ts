@@ -85,14 +85,18 @@ export async function POST(request: NextRequest) {
       `[API /api/blueprint] Inizio generazione con l'AI (questo passaggio può richiedere fino a un minuto)...`,
     );
 
-    const blueprint = await generateBlueprint({
+    const allBlueprints = await generateBlueprint({
       page: parsedPage,
       learningLevel,
       outputLanguage,
     });
 
+    if (!allBlueprints.topic && allBlueprints.blueprints[0]?.topic) {
+      allBlueprints.topic = allBlueprints.blueprints[0].topic;
+    }
+
     console.log(
-      `[API /api/blueprint] Blueprint generato con successo per: ${blueprint.topic}`,
+      `[API /api/blueprint] Blueprint generati con successo (${allBlueprints.blueprints.length} fogli) per: ${allBlueprints.topic ?? parsedPage.title}`,
     );
 
     return NextResponse.json({
@@ -100,7 +104,8 @@ export async function POST(request: NextRequest) {
         title: parsedPage.title,
         url: parsedPage.sourceUrl,
       },
-      blueprint,
+      blueprints: allBlueprints,
+      blueprint: allBlueprints.blueprints[0],
     });
   } catch (error) {
     console.error("Errore Blueprint Agent:", error);

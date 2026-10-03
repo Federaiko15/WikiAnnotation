@@ -3,8 +3,8 @@ import { openai } from "@ai-sdk/openai";
 
 import { createBlueprintAgents } from "../agents/createBlueprintAgents";
 import {
-  visualNotesBlueprintSchema,
-  type VisualNotesBlueprint,
+  VisualNotesBlueprintCollection,
+  visualNotesBlueprintCollectionSchema,
 } from "../schemas/visualNotesBlueprintSchema";
 
 import type { ParsedWikiPage } from "@/lib/wikipedia/types";
@@ -20,7 +20,7 @@ export async function generateBlueprint({
   page,
   learningLevel,
   outputLanguage,
-}: GenerateBlueprintInput): Promise<VisualNotesBlueprint> {
+}: GenerateBlueprintInput): Promise<VisualNotesBlueprintCollection> {
   const agent = createBlueprintAgents({
     articleTitle: page.title,
     learningLevel,
@@ -32,7 +32,7 @@ export async function generateBlueprint({
     model: openai("gpt-5-mini"),
     system: agent.system,
     prompt: agent.prompt,
-    output: Output.object({ schema: visualNotesBlueprintSchema }),
+    output: Output.object({ schema: visualNotesBlueprintCollectionSchema }),
   });
 
   return result.output;

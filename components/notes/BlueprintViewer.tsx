@@ -1,12 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import type { VisualNotesBlueprint } from "@/lib/ai/schemas/visualNotesBlueprintSchema";
+import type {
+  VisualNotesBlueprint,
+  VisualNotesBlueprintCollection,
+} from "@/lib/ai/schemas/visualNotesBlueprintSchema";
 import type { ImageAspectRatio } from "@/lib/ai/services/generateImage";
 import HighlightedText from "./HighlightedText";
 
 type BlueprintViewerProps = {
-  blueprint: VisualNotesBlueprint;
+  blueprints?: VisualNotesBlueprintCollection;
+  blueprint?: VisualNotesBlueprint;
   source?: {
     title: string;
     url: string;
@@ -19,6 +23,7 @@ type BlueprintViewerProps = {
 };
 
 export default function BlueprintViewer({
+  blueprints,
   blueprint,
   source,
   aspectRatio,
@@ -27,32 +32,79 @@ export default function BlueprintViewer({
   isGeneratingImage,
   hasImage,
 }: BlueprintViewerProps) {
+  const [selectedBlueprintIndex, setSelectedBlueprintIndex] = useState(0);
   const [copied, setCopied] = useState(false);
 
+  const list: VisualNotesBlueprint[] =
+    blueprints?.blueprints ?? (blueprint ? [blueprint] : []);
+  const activeBlueprint = list[selectedBlueprintIndex] ?? list[0];
+
   function copyJson() {
-    navigator.clipboard.writeText(JSON.stringify(blueprint, null, 2));
+    navigator.clipboard.writeText(
+      JSON.stringify(blueprints ?? activeBlueprint, null, 2),
+    );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
+  if (!activeBlueprint) return null;
+
   return (
     <section className="sketch-panel p-6 sm:p-8 flex flex-col gap-6">
+      {/* Blueprint Tabs for Multi-Blueprint Document */}
+      {list.length > 1 && (
+        <div className="flex flex-wrap items-center gap-2 rounded border-2 border-zinc-900 bg-zinc-50 p-3 shadow-[2px_2px_0px_#18181b]">
+          <span className="text-xs font-sketch font-bold uppercase tracking-wider text-zinc-700">
+            Fogli Blueprint ({list.length}):
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {list.map((bp, index) => {
+              const isActive = index === selectedBlueprintIndex;
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setSelectedBlueprintIndex(index)}
+                  className={`text-xs font-sketch font-bold uppercase tracking-wider px-3 py-1.5 rounded border-2 transition-all ${
+                    isActive
+                      ? "border-zinc-900 bg-[#ea580c] text-white shadow-[2px_2px_0px_#18181b]"
+                      : "border-zinc-300 bg-white text-zinc-700 hover:border-zinc-900 shadow-[1px_1px_0px_#18181b]"
+                  }`}
+                >
+                  {index + 1}. {bp.blueprintTitle || `Foglio ${index + 1}`}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Header Info */}
       <div className="flex flex-wrap items-start justify-between gap-4 border-b-2 border-dashed border-zinc-200 pb-5">
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <span className="sketch-badge-teal">
-              {blueprint.subjectType.replace(/-/g, " ").toUpperCase()}
+              {activeBlueprint.subjectType.replace(/-/g, " ").toUpperCase()}
             </span>
             <span className="sketch-badge-orange">
-              Livello: {blueprint.learningLevel.toUpperCase()}
+              Livello: {activeBlueprint.learningLevel.toUpperCase()}
             </span>
+            {list.length > 1 && (
+              <span className="sketch-badge-ink text-xs">
+                Foglio {selectedBlueprintIndex + 1} di {list.length}
+              </span>
+            )}
           </div>
 
-          <div className="mt-1">
+          <div className="mt-1 flex flex-col gap-1">
             <div className="sketchnote-title-box px-4 py-2 text-xl sm:text-2xl">
-              {blueprint.topic}
+              {activeBlueprint.topic}
             </div>
+            {activeBlueprint.blueprintTitle && (
+              <div className="text-sm font-sketch font-bold uppercase text-orange-700">
+                ↳ Focus: {activeBlueprint.blueprintTitle}
+              </div>
+            )}
           </div>
 
           {source && (
@@ -98,11 +150,14 @@ export default function BlueprintViewer({
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     />
                   </svg>
-                  Disegno infografica con AI in corso...
+                  Disegno {list.length > 1 ? `${list.length} infografiche` : "infografica"} con AI in corso...
                 </>
               ) : (
                 <>
-                  <span>✎</span> Disegna Infografica Sketchnote ➔
+                  <span>✎</span>{" "}
+                  {list.length > 1
+                    ? `Disegna Tutte le Infografiche (${list.length}) ➔`
+                    : "Disegna Infografica Sketchnote ➔"}
                 </>
               )}
             </button>
@@ -125,13 +180,13 @@ export default function BlueprintViewer({
       </div>
 
       {/* Central Visual Focus */}
-      {blueprint.centralVisual && (
+      {activeBlueprint.centralVisual && (
         <div className="rounded border-2 border-zinc-900 bg-amber-50/60 p-4 shadow-[3px_3px_0px_#ea580c]">
           <div className="flex items-center gap-2 text-xs font-sketch font-bold uppercase tracking-wider text-amber-900">
-            <span>🎯</span> Elemento Grafico Centrale ({blueprint.centralVisual.type})
+            <span>🎯</span> Elemento Grafico Centrale ({activeBlueprint.centralVisual.type})
           </div>
           <p className="mt-1 text-sm text-zinc-900 leading-relaxed">
-            {blueprint.centralVisual.instruction}
+            {activeBlueprint.centralVisual.instruction}
           </p>
         </div>
       )}
@@ -140,7 +195,7 @@ export default function BlueprintViewer({
       <div>
         <div className="flex items-center justify-between border-b-2 border-dashed border-zinc-200 pb-2">
           <h3 className="text-base font-sketch font-bold uppercase tracking-wider text-zinc-900">
-            Moduli di Conoscenza ({blueprint.modules?.length ?? 0})
+            Moduli di Conoscenza ({activeBlueprint.modules?.length ?? 0})
           </h3>
           <span className="text-xs font-sketch text-zinc-500">
             Struttura aperta • Senza schede rigide
@@ -148,7 +203,7 @@ export default function BlueprintViewer({
         </div>
 
         <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {blueprint.modules?.map((module, index) => (
+          {activeBlueprint.modules?.map((module, index) => (
             <div
               key={index}
               className="sketch-module-open flex flex-col justify-between shadow-[2px_2px_0px_rgba(0,0,0,0.06)]"
@@ -191,9 +246,9 @@ export default function BlueprintViewer({
       </div>
 
       {/* Attribution notice */}
-      {blueprint.sourceNotice && (
+      {activeBlueprint.sourceNotice && (
         <p className="text-xs text-zinc-400 font-sans italic border-t-2 border-dashed border-zinc-200 pt-3">
-          {blueprint.sourceNotice}
+          {activeBlueprint.sourceNotice}
         </p>
       )}
 
@@ -212,7 +267,7 @@ export default function BlueprintViewer({
               {copied ? "✓ Copiato" : "Copia"}
             </button>
             <pre className="max-h-60 overflow-auto rounded border-2 border-zinc-900 bg-zinc-50 p-4 font-mono text-[11px] text-zinc-800">
-              {JSON.stringify(blueprint, null, 2)}
+              {JSON.stringify(blueprints ?? activeBlueprint, null, 2)}
             </pre>
           </div>
         </details>
@@ -224,7 +279,11 @@ export default function BlueprintViewer({
             disabled={isGeneratingImage}
             className="sketch-btn-teal"
           >
-            {isGeneratingImage ? "Disegno in corso..." : "Procedi: Disegna Infografica ➔"}
+            {isGeneratingImage
+              ? "Disegno in corso..."
+              : list.length > 1
+                ? `Procedi: Disegna Tutte le Infografiche (${list.length}) ➔`
+                : "Procedi: Disegna Infografica ➔"}
           </button>
         )}
       </div>

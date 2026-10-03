@@ -6,7 +6,7 @@ const highlightSchema = z.object({
     .min(1)
     .max(35)
     .describe(
-      "Exact one-to-three-word span appearing inside the matching item text.",
+      "Exact span appearing inside the matching item text, without highlight markers.",
     ),
 });
 
@@ -16,7 +16,7 @@ const blueprintItemSchema = z.object({
     .min(1)
     .max(100)
     .describe(
-      "Exact compact infographic fragment, usually 3 to 10 words. Use ==double equals== around one or two key spans.",
+      "Compact infographic fact, usually 3–10 words. Include ==double equals== around one or two key spans. Never truncate text.",
     ),
 
   highlights: z
@@ -24,7 +24,7 @@ const blueprintItemSchema = z.object({
     .min(1)
     .max(2)
     .describe(
-      "Important exact spans contained in text. Do not list terms not present in text.",
+      "One or two important exact spans contained in text. Do not include the == markers.",
     ),
 });
 
@@ -47,7 +47,7 @@ const visualRepresentationSchema = z.object({
     .min(1)
     .max(180)
     .describe(
-      "Short concrete instruction describing what to draw, not a paragraph.",
+      "Short, concrete, complete visual instruction. Never end with an incomplete phrase.",
     ),
 });
 
@@ -56,7 +56,7 @@ const blueprintModuleSchema = z.object({
     .string()
     .min(1)
     .max(64)
-    .describe("Short all-caps module header, without number."),
+    .describe("Short ALL-CAPS module header, without a number."),
 
   conceptLabel: z
     .string()
@@ -69,7 +69,7 @@ const blueprintModuleSchema = z.object({
     .min(3)
     .max(5)
     .describe(
-      "Three to five distinct compact facts or ideas. No repeated facts.",
+      "Three to five distinct, compact facts. Never truncate facts or repeat information unnecessarily.",
     ),
 
   visual: visualRepresentationSchema,
@@ -79,12 +79,24 @@ const blueprintModuleSchema = z.object({
     .min(1)
     .max(180)
     .describe(
-      "Short statement explaining the meaningful visual connection to the central topic.",
+      "One concise, grammatically complete sentence explaining how the module relates to the central visual. Never truncate.",
     ),
 });
 
-export const visualNotesBlueprintSchema = z.object({
-  topic: z.string().min(1).max(80),
+export const singleVisualNotesBlueprintSchema = z.object({
+  topic: z
+    .string()
+    .min(1)
+    .max(80)
+    .describe("The overall subject shared by all blueprints."),
+
+  blueprintTitle: z
+    .string()
+    .min(1)
+    .max(100)
+    .describe(
+      "A concise subtitle identifying the specific focus of this infographic.",
+    ),
 
   learningLevel: z.enum([
     "primary",
@@ -111,9 +123,11 @@ export const visualNotesBlueprintSchema = z.object({
 
   modules: z
     .array(blueprintModuleSchema)
-    .min(6)
-    .max(10)
-    .describe("Six to ten non-redundant knowledge modules."),
+    .min(4)
+    .max(7)
+    .describe(
+      "Four to seven non-redundant knowledge modules focused on this infographic's specific subject.",
+    ),
 
   sourceNotice: z
     .string()
@@ -124,4 +138,28 @@ export const visualNotesBlueprintSchema = z.object({
     ),
 });
 
-export type VisualNotesBlueprint = z.infer<typeof visualNotesBlueprintSchema>;
+export const visualNotesBlueprintCollectionSchema = z.object({
+  topic: z
+    .string()
+    .min(1)
+    .max(80)
+    .describe("The overall subject shared by all blueprints."),
+
+  blueprints: z
+    .array(singleVisualNotesBlueprintSchema)
+    .min(1)
+    .describe(
+      "An ordered collection of independent educational infographic blueprints. Generate as many as needed for complete, readable coverage of the source material.",
+    ),
+});
+
+export const visualNotesBlueprintSchema = singleVisualNotesBlueprintSchema;
+
+export type VisualNotesBlueprint = z.infer<
+  typeof singleVisualNotesBlueprintSchema
+>;
+
+export type VisualNotesBlueprintCollection = z.infer<
+  typeof visualNotesBlueprintCollectionSchema
+>;
+

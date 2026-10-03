@@ -1,7 +1,10 @@
 import { generateImage } from "ai";
 import { openai } from "@ai-sdk/openai";
 
-import type { VisualNotesBlueprint } from "../schemas/visualNotesBlueprintSchema";
+import type {
+  VisualNotesBlueprint,
+  VisualNotesBlueprintCollection,
+} from "../schemas/visualNotesBlueprintSchema";
 import { createImageAgent } from "../agents/createImageAgents";
 import type { ImageStyle } from "../agents/createImageAgents";
 
@@ -22,6 +25,29 @@ export type GenerateImageOutput = {
   imageSize: string;
   finalPrompt: string;
 };
+
+export type GeneratedImageItem = {
+  topic: string;
+  blueprintTitle: string;
+  image: {
+    base64: string;
+    mediaType: string;
+  };
+  imageSize: string;
+  finalPrompt: string;
+};
+
+export type GenerateImagesInput = {
+  blueprints: VisualNotesBlueprintCollection;
+  outputLanguage: "it" | "en";
+  aspectRatio: ImageAspectRatio;
+  annotationStyle: ImageStyle;
+};
+
+export type GenerateImagesOutput = {
+  images: GeneratedImageItem[];
+};
+
 
 export async function generateImageFromBlueprint({
   blueprint,
@@ -64,3 +90,36 @@ export async function generateImageFromBlueprint({
     finalPrompt,
   };
 }
+
+export async function generateImagesFromBlueprints({
+  blueprints,
+  outputLanguage,
+  aspectRatio,
+  annotationStyle,
+}: GenerateImagesInput): Promise<GenerateImagesOutput> {
+  const imagePromises = blueprints.blueprints.map(async (blueprint, index) => {
+    console.log(
+      `[generateImage] Inizio generazione immagine ${index + 1}/${blueprints.blueprints.length} per: "${blueprint.blueprintTitle || blueprint.topic}"`,
+    );
+
+    const result = await generateImageFromBlueprint({
+      blueprint,
+      outputLanguage,
+      aspectRatio,
+      annotationStyle,
+    });
+
+    return {
+      topic: blueprint.topic,
+      blueprintTitle: blueprint.blueprintTitle || `Parte ${index + 1}`,
+      image: result.image,
+      imageSize: result.imageSize,
+      finalPrompt: result.finalPrompt,
+    };
+  });
+
+  const images = await Promise.all(imagePromises);
+
+  return { images };
+}
+

@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import type { ImageApiResponse } from "@/lib/api/notesClient";
+import type {
+  ImageApiResponse,
+  GeneratedImageItem,
+} from "@/lib/api/notesClient";
 
 type GeneratedImageViewerProps = {
   result: ImageApiResponse;
@@ -16,45 +19,154 @@ export default function GeneratedImageViewer({
   onRegenerate,
   isRegenerating,
 }: GeneratedImageViewerProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
   const [copiedPrompt, setCopiedPrompt] = useState(false);
 
-  const dataUri = `data:${result.image.mediaType || "image/png"};base64,${result.image.base64}`;
+  const images: GeneratedImageItem[] =
+    result.images && result.images.length > 0
+      ? result.images
+      : result.image
+        ? [
+            {
+              topic,
+              blueprintTitle: topic,
+              image: result.image,
+              imageSize: result.imageSize || "1024x1360",
+              finalPrompt: result.finalPrompt || "",
+            },
+          ]
+        : [];
 
-  function handleDownload() {
+  const currentItem = images[currentIndex] ?? images[0];
+
+  if (!currentItem) return null;
+
+  const dataUri = `data:${currentItem.image.mediaType || "image/png"};base64,${currentItem.image.base64}`;
+
+  function handleDownloadCurrent() {
     const link = document.createElement("a");
     link.href = dataUri;
-    const sanitizedTitle = topic
+    const title = currentItem.blueprintTitle || currentItem.topic || topic;
+    const sanitizedTitle = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
-    link.download = `appunti-visivi-${sanitizedTitle || "sketchnote"}.png`;
+    link.download = `appunti-visivi-${sanitizedTitle || "sketchnote"}${images.length > 1 ? `-${currentIndex + 1}` : ""}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   }
 
+  function handleDownloadAll() {
+    images.forEach((item, idx) => {
+      setTimeout(() => {
+        const link = document.createElement("a");
+        link.href = `data:${item.image.mediaType || "image/png"};base64,${item.image.base64}`;
+        const title = item.blueprintTitle || item.topic || topic;
+        const sanitizedTitle = title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+        link.download = `appunti-visivi-${sanitizedTitle || "sketchnote"}-${idx + 1}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, idx * 250);
+    });
+  }
+
   function handleCopyPrompt() {
-    navigator.clipboard.writeText(result.finalPrompt);
+    navigator.clipboard.writeText(currentItem.finalPrompt);
     setCopiedPrompt(true);
     setTimeout(() => setCopiedPrompt(false), 2000);
   }
 
   return (
     <section className="sketch-panel p-6 sm:p-8 flex flex-col gap-6">
+      {/* Multi-Image Tabs and Navigation */}
+      {images.length > 1 && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded border-2 border-zinc-900 bg-zinc-50 p-3 shadow-[2px_2px_0px_#18181b]">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-sketch font-bold uppercase tracking-wider text-zinc-700">
+              Fogli Infografica ({images.length}):
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {images.map((item, idx) => {
+                const isActive = idx === currentIndex;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setCurrentIndex(idx)}
+                    className={`text-xs font-sketch font-bold uppercase tracking-wider px-3 py-1 rounded border-2 transition-all ${
+                      isActive
+                        ? "border-zinc-900 bg-[#ea580c] text-white shadow-[2px_2px_0px_#18181b]"
+                        : "border-zinc-300 bg-white text-zinc-700 hover:border-zinc-900 shadow-[1px_1px_0px_#18181b]"
+                    }`}
+                  >
+                    Foglio {idx + 1}: {item.blueprintTitle || `Parte ${idx + 1}`}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() =>
+                setCurrentIndex((prev) =>
+                  prev > 0 ? prev - 1 : images.length - 1,
+                )
+              }
+              className="sketch-btn-white text-xs py-1 px-2.5"
+            >
+              ← Prec
+            </button>
+            <span className="text-xs font-sketch font-bold text-zinc-600">
+              {currentIndex + 1} / {images.length}
+            </span>
+            <button
+              type="button"
+              onClick={() =>
+                setCurrentIndex((prev) =>
+                  prev < images.length - 1 ? prev + 1 : 0,
+                )
+              }
+              className="sketch-btn-white text-xs py-1 px-2.5"
+            >
+              Succ →
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Top action bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-dashed border-zinc-200 pb-5">
         <div className="flex flex-col gap-2">
-          <span className="sketch-badge-teal">
-            ✓ Infografica Illustrata Generata
-          </span>
-          <div className="mt-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="sketch-badge-teal">
+              ✓ {images.length > 1 ? `${images.length} Infografiche Generate` : "Infografica Generata"}
+            </span>
+            {images.length > 1 && (
+              <span className="sketch-badge-ink text-xs">
+                Foglio {currentIndex + 1} di {images.length}
+              </span>
+            )}
+          </div>
+          <div className="mt-1 flex flex-col gap-1">
             <h3 className="sketchnote-title-box-sm px-4 py-1.5 text-lg sm:text-xl">
-              {topic}
+              {currentItem.topic}
             </h3>
+            {currentItem.blueprintTitle && (
+              <div className="text-sm font-sketch font-bold uppercase text-orange-700">
+                ↳ Focus: {currentItem.blueprintTitle}
+              </div>
+            )}
           </div>
           <p className="text-xs text-zinc-500 font-sans">
-            Foglio Sketchnote • Risoluzione: {result.imageSize} • Formato PNG
+            Foglio Sketchnote • Risoluzione: {currentItem.imageSize} • Formato PNG
           </p>
         </div>
 
@@ -90,28 +202,41 @@ export default function GeneratedImageViewer({
                 Ridisegno in corso...
               </>
             ) : (
-              <>↺ Ridisegna Infografica</>
+              <>↺ {images.length > 1 ? "Ridisegna Tutte" : "Ridisegna Infografica"}</>
             )}
           </button>
 
           <button
             type="button"
-            onClick={handleDownload}
+            onClick={handleDownloadCurrent}
             className="sketch-btn-orange text-xs py-2 px-4"
           >
-            ⬇ Scarica PNG
+            ⬇ {images.length > 1 ? "Scarica Questo Foglio" : "Scarica PNG"}
           </button>
+
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={handleDownloadAll}
+              className="sketch-btn-teal text-xs py-2 px-4"
+            >
+              ⬇ Scarica Tutte ({images.length})
+            </button>
+          )}
         </div>
       </div>
 
       {/* Main Image Paper Container */}
       <div className="relative mx-auto flex max-w-3xl flex-col items-center justify-center overflow-hidden rounded border-2 border-zinc-900 bg-white p-3 sm:p-4 shadow-[5px_5px_0px_#18181b]">
-        <div className="group relative w-full cursor-zoom-in" onClick={() => setIsZoomOpen(true)}>
+        <div
+          className="group relative w-full cursor-zoom-in"
+          onClick={() => setIsZoomOpen(true)}
+        >
           {/* Using standard img for direct Base64 Data URL display */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={dataUri}
-            alt={`Mappa concettuale illustrata per ${topic}`}
+            alt={`Mappa concettuale illustrata per ${currentItem.topic} - ${currentItem.blueprintTitle}`}
             className="mx-auto h-auto max-h-[75vh] w-auto rounded border border-zinc-200 object-contain transition-transform duration-200 group-hover:scale-[1.005]"
           />
           <div className="absolute inset-0 flex items-center justify-center bg-black/10 opacity-0 transition-opacity group-hover:opacity-100">
@@ -126,7 +251,7 @@ export default function GeneratedImageViewer({
       <div className="flex flex-col gap-2 border-t-2 border-dashed border-zinc-200 pt-4">
         <details className="text-xs text-zinc-500">
           <summary className="cursor-pointer font-sketch font-bold uppercase tracking-wider hover:text-zinc-900">
-            Mostra prompt di generazione inviato a gpt-image-1
+            Mostra prompt di generazione inviato al modello AI (Foglio {currentIndex + 1})
           </summary>
           <div className="relative mt-2">
             <button
@@ -137,7 +262,7 @@ export default function GeneratedImageViewer({
               {copiedPrompt ? "✓ Copiato" : "Copia Prompt"}
             </button>
             <pre className="max-h-56 overflow-auto rounded border-2 border-zinc-900 bg-zinc-50 p-4 font-mono text-[11px] text-zinc-800 whitespace-pre-wrap">
-              {result.finalPrompt}
+              {currentItem.finalPrompt}
             </pre>
           </div>
         </details>
@@ -153,18 +278,49 @@ export default function GeneratedImageViewer({
             className="relative max-h-[95vh] max-w-[95vw] overflow-auto rounded border-2 border-zinc-900 bg-white p-2 shadow-[8px_8px_0px_#18181b]"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={() => setIsZoomOpen(false)}
-              className="sketch-btn-white absolute top-4 right-4 z-10 h-9 w-9 p-0 flex items-center justify-center text-sm font-bold shadow-[2px_2px_0px_#18181b]"
-              aria-label="Chiudi zoom"
-            >
-              ✕
-            </button>
+            <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+              {images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCurrentIndex((prev) =>
+                        prev > 0 ? prev - 1 : images.length - 1,
+                      )
+                    }
+                    className="sketch-btn-white text-xs py-1 px-2 shadow-[2px_2px_0px_#18181b]"
+                  >
+                    ← Prec
+                  </button>
+                  <span className="text-xs font-sketch font-bold text-zinc-800 bg-white px-2 py-1 rounded border-2 border-zinc-900">
+                    {currentIndex + 1} / {images.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCurrentIndex((prev) =>
+                        prev < images.length - 1 ? prev + 1 : 0,
+                      )
+                    }
+                    className="sketch-btn-white text-xs py-1 px-2 shadow-[2px_2px_0px_#18181b]"
+                  >
+                    Succ →
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={() => setIsZoomOpen(false)}
+                className="sketch-btn-white h-9 w-9 p-0 flex items-center justify-center text-sm font-bold shadow-[2px_2px_0px_#18181b]"
+                aria-label="Chiudi zoom"
+              >
+                ✕
+              </button>
+            </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={dataUri}
-              alt={`Zoom appunti visivi ${topic}`}
+              alt={`Zoom appunti visivi ${currentItem.topic} - ${currentItem.blueprintTitle}`}
               className="h-auto max-h-[90vh] w-auto object-contain"
             />
           </div>

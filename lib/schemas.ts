@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB;
 
 export const pdfBase64Schema = z
   .string({ error: "La stringa è obbligatoria" })
@@ -37,4 +37,3 @@ export const uploadRequestSchema = z.object({
   pdfBase64: pdfBase64Schema,
   fileName: z.string().optional(),
 });
-
