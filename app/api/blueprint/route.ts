@@ -99,7 +99,11 @@ export async function POST(request: NextRequest) {
       `[API /api/blueprint] Blueprint generati con successo (${allBlueprints.blueprints.length} fogli) per: ${allBlueprints.topic ?? parsedPage.title}`,
     );
 
+    const id = crypto.randomUUID();
+    redis.set(id, JSON.stringify(allBlueprints), { ex: 3600 }); // Salva per 1 ora
+
     return NextResponse.json({
+      id,
       source: {
         title: parsedPage.title,
         url: parsedPage.sourceUrl,

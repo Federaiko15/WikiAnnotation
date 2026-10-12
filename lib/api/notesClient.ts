@@ -30,6 +30,7 @@ export type BlueprintApiParams = {
 };
 
 export type BlueprintApiResponse = {
+  id: string;
   source: {
     title: string;
     url: string;
@@ -53,7 +54,6 @@ export type ImageApiResponse = {
   imageSize?: string;
   finalPrompt?: string;
 };
-
 
 export async function fetchBlueprint(
   params: BlueprintApiParams,

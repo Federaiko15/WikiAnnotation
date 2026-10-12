@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     const extractedText = parsedData.text;
     const randomId = crypto.randomUUID();
-    await redis.set(randomId, extractedText, { ex: 600 });
+    await redis.set(randomId, extractedText, { ex: 3600 });
 
     const rawFileName = fileName || "Documento PDF";
     const title = rawFileName

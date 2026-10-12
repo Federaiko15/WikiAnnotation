@@ -17,6 +17,7 @@ import BlueprintConfigForm from "./BlueprintConfigForm";
 import BlueprintViewer from "./BlueprintViewer";
 import GeneratedImageViewer from "./GeneratedImageViewer";
 import StatusBanner from "./StatusBanner";
+import { useRouter } from "next/navigation";
 
 type VisualNotesStudioProps = {
   pageKey: string;
@@ -35,6 +36,8 @@ export default function VisualNotesStudio({
   const [aspectRatio, setAspectRatio] = useState<ImageAspectRatio>("3:4");
   const [autoGenerateImage, setAutoGenerateImage] = useState<boolean>(false);
   const [annotationStyle, setAnnotationStyle] = useState<ImageStyle>(0);
+  const [blueprintsId, setBlueprintsId] = useState<string | null>(null);
+  const router = useRouter();
 
   // Workflow results
   const [blueprints, setBlueprints] =
@@ -81,6 +84,7 @@ export default function VisualNotesStudio({
 
       setBlueprints(data.blueprints);
       setSource(data.source);
+      setBlueprintsId(data.id);
       setCurrentStep("blueprint");
 
       // If user enabled auto-generation, immediately trigger Fetch 2
@@ -217,12 +221,31 @@ export default function VisualNotesStudio({
 
       {/* Step 3: Generated Infographic Sketchnote Image */}
       {imageResult && currentStep === "image" && (
-        <GeneratedImageViewer
-          result={imageResult}
-          topic={blueprints?.topic ?? articleTitle}
-          onRegenerate={() => executeImageGeneration()}
-          isRegenerating={loadingPhase === "image"}
-        />
+        <>
+          <GeneratedImageViewer
+            result={imageResult}
+            topic={blueprints?.topic ?? articleTitle}
+            onRegenerate={() => executeImageGeneration()}
+            isRegenerating={loadingPhase === "image"}
+          />
+
+          <button
+            className="mt-4 px-4 py-2 bg-orange-600 text-white rounded shadow hover:bg-orange-700 transition-colors"
+            onClick={() => {
+              if (blueprintsId) {
+                router.replace(
+                  `/flashcards/${blueprintsId}/${textId}/?outputLanguage=${outputLanguage}`,
+                );
+              } else {
+                alert(
+                  "Nessun blueprint disponibile per generare le flashcards.",
+                );
+              }
+            }}
+          >
+            Studia Adesso tramite le flashcards generate con il tuo blueprint!
+          </button>
+        </>
       )}
     </div>
   );
